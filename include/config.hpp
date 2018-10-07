@@ -2,6 +2,7 @@
 #define CONFIG_HPP
 
 #include <Arduino.h>
+#include "SSD1306Ascii.h"
 
 const bool DEBUG = true;
 
@@ -25,8 +26,21 @@ const uint8_t JOYSTICK_PIN_BUTTON = 2;
 
 /// Number of bytes in EEPROM. Value depends on the board you are using.
 const uint16_t EEPROM_SIZE_IN_BYTES = 1024;
-const uint8_t EEPROM_BYTE_WATER_USAGE = 100;
-const uint8_t EEPROM_BYTE_LITERS_PER_WATERING = 120;
-const uint8_t 
+
+///////////////////////////////////////////////////////////////////////////////
+// DISPLAY
+///////////////////////////////////////////////////////////////////////////////
+
+// Display address for I2C connection
+const uint8_t  DISPLAY_I2C_ADDRESS = 0x3C;
+const DevType* DISPLAY_TYPE = &Adafruit128x32;
+const uint8_t* DISPLAY_FONT = System5x7;
+const uint8_t  DISPLAY_NUM_LINES = 4;
+
+///////////////////////////////////////////////////////////////////////////////
+// DISPLAY
+///////////////////////////////////////////////////////////////////////////////
+
+const uint8_t EVENTS_POOL_SIZE = 10;
 
 #endif 

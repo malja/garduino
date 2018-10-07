@@ -2,6 +2,7 @@
 #define WELCOME_APP_STATE_HPP
 
 #include "AppState.hpp"
+#include "EventType.hpp"
 
 class WelcomeAppState : public AppState {
     void onStart();

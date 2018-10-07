@@ -1,8 +1,18 @@
 #include "App.hpp"
 
 App::App() {
-    this->_state = nullptr;
-    this->_last_time = millis();
+    
+	// Fill whole _states array with NULL. This helps to check against empty cells in update method.
+	for (uint8_t i = 0; i < AppStateIDs::__MAX__; i++) {
+		this->_states[i] = nullptr;
+	}
+
+	this->_current_state = 0;
+
+	// Fill _states array with registered app states pointers
+	this->_states[AppStateIDs::WELCOME] = &app_state_welcome;
+	this->_states[AppStateIDs::OVERRIDE] = &app_state_override;
+	this->_states[AppStateIDs::WATER_LEVELS] = &app_state_water_levels;
 
     // Connect to joystick
     this->_joystick = PSJoystick();
@@ -16,89 +26,105 @@ App::App() {
 
 void App::update() {
 
-    // Calculate delta time
-    unsigned long long ms = millis();
+	// Get current time
+	unsigned long long ms = millis();
 
     // Create event pool
     this->createEvents(ms);
 
+	// Get current state or NULL when empty
+	AppState *state = this->_states[this->_current_state];
+
     // Is there any application state
-    if (nullptr != this->_state) {
+    if (nullptr != state) {
         // Run app state update
-        this->_state->update(dt);
+        state->update(ms);
     }
 }
 
-void App::setState(AppState *state) {
+void App::setState(AppStateIDs id) {
+
+	// Get current state
+	AppState *state = this->_states[this->_current_state];
 
     // Make sure to clear old state
-    if (this->_state != nullptr) {
-        this->_state->onExit();
-        delete this->_state;
+    if (nullptr != state) {
+        state->onExit();
     }
 
     // Run new state
-    this->_state = state;
-    this->_state->setup(this);
-    this->_state->onStart();
+	this->_current_state = id;
+	state = this->_states[this->_current_state];
+
+	state->setup(this);
+    state->onStart();
 }
 
 void App::createEvents(unsigned long long ms) {
 
-    // Clear old events
-    this->_events.clear()
+	// When event is marked with EventType::None, it means it does not hold any data
+	// This event will not be returned from polling.
+	for (uint8_t i = 0; i < EVENTS_POOL_SIZE; i++) {
+		this->_events[i].type = EventType::None;
+	}
 
     handleJoystick(ms);
 
+}
+
+bool App::pollEvent(const Event &event) {
+ 
+	// TODO
+
+}
+
+Event* App::getFreeEventFromPool() {
+    // Prepare event object
+    if (EVENTS_POOL_SIZE == this->_events_count) {
+        this->_events_count = 0;
+    }
+
+    return &(this->_events[this->_events_count++]);
 }
 
 void App::handleJoystick(unsigned long long ms) {
 
     // Read joystick values
     this->_joystick.update(ms);
-
-    // Prepare event object
-    Event ev;
-    
-    // Set event type to joystick
-    ev.type = EventType::Joystick;
     
     // Read X and Y axis of joystick
     int8_t x_axis = this->_joystick.getX();
     int8_t y_axis = this->_joystick.getY();
 
-    // Non-default position on X axis
-    if (0 != x_axis) {
+    // Joystick movement
+    if (0 != x_axis || 0 != y_axis) {
+
+        // Get pointer to one of events in pool
+        Event *ev = this->getFreeEventFromPool();
+        
+        // Set event type to joystick
+        ev->type = EventType::Joystick;
 
         // Fill joystick event
-        ev.joystick.type = x_axis < 0 ? JoystickEventType::MOVE_LEFT : JoystickEventType::MOVE_RIGHT;
-        ev.joystick.pressed = this->_joystick.isPressed();
-        ev.joystick.x_axis = x_axis;
-        ev.joystick.y_axis = y_axis;
-
-        this->_events.push(ev);
+        ev->joystick.type = EventJoystickType::MOVE;
+        ev->joystick.pressed = this->_joystick.isPressed();
+        ev->joystick.x_axis = x_axis;
+        ev->joystick.y_axis = y_axis;
     }
 
-    // Non-default position on Y axis
-    if (0 != y_axis) {
+    if (this->_joystick.isPressed()) {
+
+        // Get pointer to one of events in pool
+        Event *ev = this->getFreeEventFromPool();
+        
+        // Set event type to joystick
+        ev->type = EventType::Joystick;
 
         // Fill joystick event
-        ev.joystick.type = y_axis < 0 ? JoystickEventType::MOVE_UP : JoystickEventType::MOVE_DOWN;
-        ev.joystick.pressed = this->_joystick.isPressed();
-        ev.joystick.x_axis = x_axis;
-        ev.joystick.y_axis = y_axis;
+        ev->joystick.type = EventJoystickType::BUTTON;
+        ev->joystick.pressed = true;
+        ev->joystick.x_axis = x_axis;
+        ev->joystick.y_axis = y_axis;
 
-        this->_events.push(ev);
-    }
-
-    if (this->_joystick->isPressed()) {
-
-        // Fill joystick event
-        ev.joystick.type = JoystickEventType::BUTTON;
-        ev.joystick.pressed = true;
-        ev.joystick.x_axis = x_axis;
-        ev.joystick.y_axis = y_axis;
-
-        this->_events.push(ev);
     }
 }

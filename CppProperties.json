@@ -1,0 +1,25 @@
+{
+  "configurations": [
+    {
+      "inheritEnvironments": [
+        "msvc_x86"
+      ],
+      "name": "x86-Debug",
+      "includePath": [
+        "${workspaceRoot}\\..\\..\\..\\..\\..\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\cores\\arduino",
+        "${env.INCLUDE}",
+        "${workspaceRoot}\\include",
+        "${workspaceRoot}\\include\\AppStates",
+        "${workspaceRoot}\\include\\Events",
+        "${workspaceRoot}\\include\\Subsystems"
+      ],
+      "defines": [
+        "WIN32",
+        "_DEBUG",
+        "UNICODE",
+        "_UNICODE"
+      ],
+      "intelliSenseMode": "windows-msvc-x86"
+    }
+  ]
+}

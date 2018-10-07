@@ -2,7 +2,8 @@
 #define EVENT_TYPE_HPP
 
 typedef enum {
-    Joystick
+    Joystick,
+	None ///< This event type is used as a mark, that event does not hold any data.
 } EventType;
 
 #endif

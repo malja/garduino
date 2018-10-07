@@ -2,11 +2,11 @@
 #define EVENT_HPP
 
 #include "EventType.hpp"
-#include "JoystickEvent.hpp"
+#include "EventJoystick.hpp"
 
 typedef union Event {
     EventType type;
-    JoystickEvent joystick;
+    EventJoystick joystick;
 } Event;
 
 #endif
