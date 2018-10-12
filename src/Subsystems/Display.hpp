@@ -1,9 +1,9 @@
 #ifndef DISPLAY_HPP
 #define DISPLAY_HPP
 
-#include "config.hpp"
-#include "SSD1306Ascii.h"
-#include "SSD1306AsciiAvrI2c.h"
+#include "../config.hpp"
+#include "./Display/SSD1306Ascii.h"
+#include "./Display/SSD1306AsciiAvrI2c.h"
 
 class Display {
 

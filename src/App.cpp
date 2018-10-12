@@ -10,9 +10,9 @@ App::App() {
 	this->_current_state = 0;
 
 	// Fill _states array with registered app states pointers
-	this->_states[AppStateIDs::WELCOME] = &app_state_welcome;
-	this->_states[AppStateIDs::OVERRIDE] = &app_state_override;
-	this->_states[AppStateIDs::WATER_LEVELS] = &app_state_water_levels;
+	this->_states[AppStateIDs::MAIN] = &app_state_main;
+	this->_states[AppStateIDs::SETTINGS] = &app_state_settings;
+	this->_states[AppStateIDs::STATISTICS] = &app_state_statistics;
 
     // Connect to joystick
     this->_joystick = PSJoystick();
@@ -74,8 +74,13 @@ void App::createEvents(unsigned long long ms) {
 
 bool App::pollEvent(const Event &event) {
  
-	// TODO
-
+	for(uint8_t i = 0; i < EVENTS_POOL_SIZE; i++) {
+        if (EventType::None != this->_events[i].type) {
+            // TODO: Copy event union
+            return true;
+        }
+    }
+    return false;
 }
 
 Event* App::getFreeEventFromPool() {
@@ -121,7 +126,7 @@ void App::handleJoystick(unsigned long long ms) {
         ev->type = EventType::Joystick;
 
         // Fill joystick event
-        ev->joystick.type = EventJoystickType::BUTTON;
+        ev->joystick.type = EventTypeJoystick::BUTTON;
         ev->joystick.pressed = true;
         ev->joystick.x_axis = x_axis;
         ev->joystick.y_axis = y_axis;

@@ -2,7 +2,7 @@
 #define CONFIG_HPP
 
 #include <Arduino.h>
-#include "SSD1306Ascii.h"
+#include "Subsystems/Display/SSD1306Ascii.h"
 
 const bool DEBUG = true;
 

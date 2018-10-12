@@ -1,7 +1,7 @@
 #ifndef APP_STATE_HPP
 #define APP_STATE_HPP
 
-#include "AllStates.hpp"
+#include "AppStates/AllStates.hpp"
 
 extern class App;
 
@@ -12,8 +12,7 @@ class AppState {
         virtual void onStart() = 0;
         virtual void update(unsigned long long ms) = 0;
 		virtual void onExit() = 0;
-    protected:
-        App *_app;
+        App *app;
 };
 
 #endif
