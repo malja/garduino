@@ -3,10 +3,11 @@
 
 #include "config.hpp"
 //#include "./Subsystems/Storage.hpp"
-#include "./Subsystems/Joystick/Joystick.hpp"
-#include "./Subsystems/Display/Display.hpp"
-#include "./AppStates/AppState.hpp"
-#include "./Events/Event.hpp"
+#include "Subsystems/Joystick/Joystick.hpp"
+#include "Subsystems/Display/SSD1306AsciiAvrI2c.h"
+#include "Menu/MenuScreen.hpp"
+#include "interruptions.hpp"
+#include "Events/Event.hpp"
 
 #include <Arduino.h>
 
@@ -16,38 +17,68 @@ class App {
         App();
         ~App();
 
+        /**
+         * This method should be called in Arduino's `setup` function to
+         * initialize Garduino application.
+         * 
+         * Note: This method is required, because some Arduino specific calls,
+         * for example readAnalog will fail when executed outside `setup` or
+         * `loop` functions. App instance is created outside of those functions
+         * and thus calling just the constructor is not enought.
+         */
         void setup();
+
+        /**
+         * This method should be called in Arduino's `loop` function. It consist
+         * of all app and app state specific runtime.
+         */
         void run();
 
 		/**
-		 * Change current app state. Old one will be paused.
-		 * @param state One of available state IDs.
-         * @return False for invalid ID (negative or out of bounds set by APP_STATES_COUNT).
+		 * Change current menu screen.
+		 * @param screen One of available screen IDs.
+         * @return False for invalid ID (negative or out of bounds set by APP_SCREENS_COUNT).
 		 */
-        bool switchState(AppStateIDs state);
+        bool switchScreen(MenuScreen::Id screen);
 
         /**
-         * Register new app state. Application is responsible for freeing the
+         * Register new menu screen. Application is responsible for freeing the
          * memory.
-         * @param id State will be available with this id.
-         * @param state Pointer to new AppState instance.
-         * @return False for invalid ID (negative or out of bounds set by APP_STATES_COUNT) or
+         * @param id Screen will be available with this id.
+         * @param screen Pointer to new MenuScreen instance.
+         * @return False for invalid ID (negative or out of bounds set by APP_SCREENS_COUNT) or
          * null state pointer.
          */
-        bool addState(AppStateIDs id, AppState *state);
+        bool addScreen(MenuScreen::Id id, MenuScreen *screen);
 
+        /**
+         * Get one event from queue. Event data is filled in `event` parameter. 
+         * @param event Fill this event with one of events from pool.
+         * @return True if there is unhandled event and proper data was set to
+         * `event` parameter. False if no event is pending.
+         */
         bool pollEvent(Event &event);
+
+        /**
+         * Push new event to the event loop. 
+         * @param event New event to be added. 
+         */
         void addEvent(const Event &event);
 
-        Display display;
+        /**
+         * Contains OLED display functionality. 
+         */
+        SSD1306AsciiAvrI2c display;
+
         //Storage storage;
     
     protected:
 
         /*
-         * Create all events from underlaying hardware.
+         * Handle events occured from hardware - joystick movement,
+         * interruptions, etc. - and fill event pool.
          */
-        void createEvents(unsigned long long ms);
+        void createEvents(time_ms ms);
 
         /**
          * Read data from joystick and create events if necessary.
@@ -65,9 +96,9 @@ class App {
         uint8_t _events_count;	///< Holds index of last inserted event.
 
 		// List of app states
-        AppState *_states[APP_STATES_COUNT];
-		int8_t _current_state;  ///< Holds one of AppStateIDs' values or -1. If positive, it sets current state.
-                                ///< -1 means there is no current state set.
+        MenuScreen *_screens[APP_SCREENS_COUNT];
+		int8_t _current_screen;  ///< Holds one of MenuScreen::ID's values or -1. If positive, it sets current screen.
+                                ///< -1 means there is no current screen set.
 
         Joystick _joystick;
 };

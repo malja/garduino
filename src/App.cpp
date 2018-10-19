@@ -6,13 +6,13 @@
 
 App::App() {
 
-	// Fill whole _states array with NULL. This helps to check against empty cells in update method.
-	for (uint8_t i = 0; i < APP_STATES_COUNT; i++) {
-		_states[i] = nullptr;
+	// Fill whole _screens array with NULL. This helps to check against empty cells in update method.
+	for (uint8_t i = 0; i < APP_SCREENS_COUNT; i++) {
+		_screens[i] = nullptr;
 	}
 
-    // No current state
-	_current_state = -1;
+    // No current screen
+	_current_screen = -1;
 
     // Setup EEPROM storage
     if (DEBUG) {
@@ -27,15 +27,38 @@ App::App() {
 
 void App::setup() {
 
-    // Register App states
-    addState(AppStateIDs::Main, new AppStateMain);
-    addState(AppStateIDs::Settings, new AppStateSettings);
-    addState(AppStateIDs::Statistics, new AppStateStatistics);
+    addScreen(MenuScreen::Id::Main, new MenuScreen("Welcome", (MenuItem**){
+        new MenuItem("Settings", -1, MenuScreen::Id::Settings),
+        new MenuItem("Statistics", -1, MenuScreen::Id::Statistics),
+        nullptr
+    }));
 
-    // Run Main state as first
-    switchState(AppStateIDs::Main);
+    addScreen(MenuScreen::Id::Settings, new MenuScreen("Settings", (MenuItem**){
+        new MenuItem("Hum. thrsld", RUNTIME_DEFAULT_HUMIDITY_THRESHOLD, MenuScreen::Id::None),
+        new MenuItem("l/watering", RUNTIME_DEFAULT_WATERING_LITERS, MenuScreen::Id::None),
+        new MenuItem("Back", -1, MenuScreen::Id::Main),
+        nullptr
+    }));
+    addScreen(MenuScreen::Id::Statistics, new MenuScreen("Statistics", (MenuItem **){
+        new MenuItem("Ttl liters", -1, MenuScreen::Id::None),
+        new MenuItem("Cur. humidity", -1, MenuScreen::Id::None),
+        new MenuItem("Back", -1, MenuScreen::Id::Main),
+        nullptr
+    }));
 
+    // Set current screen
+    switchScreen(MenuScreen::Id::Main);
+
+    // Setup connection to joystick
     _joystick.setup(JOYSTICK_PIN_X_AXIS, JOYSTICK_PIN_Y_AXIS, JOYSTICK_PIN_BUTTON, JOYSTICK_UPDATE_INTERVAL);
+    
+    // Setup display
+    display.begin(DISPLAY_TYPE, DISPLAY_I2C_ADDRESS);
+    display.setFont(DISPLAY_FONT);
+    display.clear();
+    
+    // Attach interruption for water meter pulse counting
+    attachInterrupt(digitalPinToInterrupt(INTERRUPTIONS_PIN_WATER_METER), onWaterMeterPulse, FALLING);
 }
 
 void App::run() {
@@ -44,70 +67,48 @@ void App::run() {
 	unsigned long long ms = millis();
 
     Serial.println("App>Creating events...");
+    
     // Create event pool
     this->createEvents(ms);
 
-    Serial.println("App>Getting AppState...");
-	// Get current state or NULL when empty
-	AppState *state = this->_states[this->_current_state];
+    // Search for events which should be handled at application level
+    this->handleSystemEvents();
 
-    // Is there any application state
-    if (nullptr != state) {
-        // Run app state update
-        Serial.println("App>Running AppState");
-        state->update(ms);
+    Serial.println("App>Getting screen...");
+	
+    // Get current screen or NULL when empty
+	MenuScreen *screen = this->_screens[this->_current_screen];
+
+    // Is there any screen set
+    if (nullptr != screen) {
+        Serial.println("App>Running screen");
+        screen->update(ms);
     }
 }
 
-bool App::switchState(AppStateIDs id) {
-
-    AppState *state = nullptr;
+bool App::switchScreen(MenuScreen::Id id) {
     
     // Check ID
     int8_t i = (int8_t)id;
-    if ( 0 < i || i > APP_STATES_COUNT ) {
+    if ( 0 < i || i > APP_SCREENS_COUNT ) {
         return false;
-    }
-
-	// If current state is set
-    if ( -1 != _current_state) {
-	    state = _states[_current_state];
-       
-        // Make sure to clear old state
-        if (nullptr != state) {
-            state->onExit();
-        }
     }
 
     // Switch state
-	_current_state = i;
-	state = _states[_current_state];
-
-    // Prepare state for running
-    state->onStart();
+	_current_screen = i;
 }
 
-bool App::addState(AppStateIDs id, AppState *state) {
+bool App::addScreen(MenuScreen::Id id, MenuScreen *screen) {
     uint8_t i = (uint8_t)id;
 
-    // Don't allow to register app state with invalid ID
-    if (i < 0 || i > APP_STATES_COUNT) {
+    // Don't allow to register screen with invalid ID
+    if (i < 0 || i > APP_SCREENS_COUNT) {
         return false;
     }
 
-    // No point in adding null
-    if (nullptr == state) {
-        return false;
-    }
-
-    // Make sure no memory is leaked
-    if (nullptr != _states[i]) {
-        delete _states[i];
-    }
-
-    // Add new state
-    _states[i] = state;
-    _states[i]->setup(this); 
+    // Add new screen
+    screen->setup(this);
+    _screens[i] = screen;
 }
 
 void App::createEvents(unsigned long long ms) {
@@ -182,9 +183,9 @@ void App::handleJoystickEvents(unsigned long long ms) {
 
 App::~App() {
     // Free memory
-    for(uint8_t i = 0; i < APP_STATES_COUNT; i++) {
-        if (nullptr != _states[i]) {
-            delete _states[i];
+    for(uint8_t i = 0; i < APP_SCREENS_COUNT; i++) {
+        if (nullptr != _screens[i]) {
+            delete _screens[i];
         }
     }
 }

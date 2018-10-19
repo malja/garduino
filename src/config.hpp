@@ -2,7 +2,7 @@
 #define CONFIG_HPP
 
 #include <Arduino.h>
-#include "./Subsystems/Display/driver/SSD1306Ascii.h"
+#include "./Subsystems/Display/SSD1306Ascii.h"
 
 const bool DEBUG = true;
 
@@ -18,7 +18,7 @@ const bool DEBUG = true;
 /// Analog pin for reading Y axis of connected joystick
 #define JOYSTICK_PIN_Y_AXIS A1
 /// Digital pin for reading push button status
-#define JOYSTICK_PIN_BUTTON 2
+#define JOYSTICK_PIN_BUTTON 3
 
 ///////////////////////////////////////////////////////////////////////////////
 // EEPROM
@@ -36,14 +36,35 @@ const bool DEBUG = true;
 #define DISPLAY_TYPE &Adafruit128x32
 #define DISPLAY_FONT System5x7
 #define DISPLAY_NUM_LINES 4
+#define DISPLAY_NUM_CHARACTERS 25
+
+#define MENU_HEADER_LENGTH 15
 
 ///////////////////////////////////////////////////////////////////////////////
-// DISPLAY
+// EVENTS
 ///////////////////////////////////////////////////////////////////////////////
 
 #define EVENTS_POOL_SIZE 10
 
-/// Number of app states. Value is used for generating list of all app states.
-#define APP_STATES_COUNT 3
+///////////////////////////////////////////////////////////////////////////////
+// APPLICATION
+///////////////////////////////////////////////////////////////////////////////
+
+/// Number of app screens. Value is used for generating list of all app screens.
+#define APP_SCREENS_COUNT 3
+
+///////////////////////////////////////////////////////////////////////////////
+// INTERRUPTIONS
+///////////////////////////////////////////////////////////////////////////////
+
+#define INTERRUPTIONS_PIN_WATER_METER 2
+
+///////////////////////////////////////////////////////////////////////////////
+// RUNTIME
+///////////////////////////////////////////////////////////////////////////////
+
+// For now, just random value. But it should set threshold for humidity levels 
+// received from sensor. Anything below this will trigger watering.
+#define RUNTIME_DEFAULT_HUMIDITY_THRESHOLD 120
 
 #endif 

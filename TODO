@@ -1,0 +1,11 @@
+- Zprovoznit vytváření MenuScreen-ů v App.cpp
+- Vyzkoušet renderování MenuScreen-ů na Arduinu
+- Promazat nepotřebné AppState
+- Promyslet načítání hodnot do jednotlivých MenuItem-ů. Nejspíš přidat metodu
+update, která by se volala z MenuScreen-u. V té by se data tahala z EEPROM.
+- Zprovoznit zápis do EEPROM - momentálně jde o proměnné:
+    - Vlhkost půdy, pod kterou se spustí zálivka
+    - Délka zálivky v litrech
+    - Interval mezi kontrolami zálivky
+    - Celkový počet litrů použitý na zalévání (statistika)
+    - Aktuální vlhkost (statistika)

@@ -1,10 +1,10 @@
 #ifndef JOYSTICK_HPP
 #define JOYSTICK_HPP
 
-#include "../../typedefs.hpp"
-#include "../../Events/EventJoystick.hpp"
-#include "../../config.hpp"
-#include "PSJoystick.hpp"
+#include "Helpers/typedefs.hpp"
+#include "Events/EventJoystick.hpp"
+#include "config.hpp"
+#include "Subsystems/Joystick/PSJoystick.hpp"
 
 class Joystick : public PSJoystick {
 
