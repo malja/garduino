@@ -1,4 +1,5 @@
 #include "AppStateSettings.hpp"
+#include "../App.hpp"
 
 void AppStateSettings::onStart() {
     this->app->display.clear();
@@ -7,12 +8,12 @@ void AppStateSettings::onStart() {
 
 void AppStateSettings::update(unsigned long long ms) {
     Event event;
-    while(this->app->pollEvent(&event)) {
-        if (EventType::Joystick == event.type && EventTypeJoystick::MOVE == event.joystick.type) {
+    while(this->app->pollEvent(event)) {
+        if (EventType::Joystick == event.type && EventTypeJoystick::Direction == event.joystick.type) {
             // Move left
-            if (event.joystick.x_axis < 0) {
+            if (EventJoystickMoveDirection::Left == event.joystick.direction) {
                 // Back to main display
-                this->app->setState(AppStateIDs::MAIN);
+                this->app->switchState(AppStateIDs::Main);
                 break;
             }
         }

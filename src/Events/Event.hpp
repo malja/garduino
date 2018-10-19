@@ -4,9 +4,12 @@
 #include "EventType.hpp"
 #include "EventJoystick.hpp"
 
-typedef union Event {
+typedef struct Event {
     EventType type;
     EventJoystick joystick;
+
+    Event();
+    Event &operator=(const Event &copy);
 } Event;
 
 #endif

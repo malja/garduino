@@ -1,9 +1,13 @@
 #ifndef APP_STATE_HPP
 #define APP_STATE_HPP
 
-#include "AppStates/AllStates.hpp"
+typedef enum class AppStateIDs {
+	Main,
+	Settings,
+	Statistics,
+} AppStateIDs;
 
-extern class App;
+class App;
 
 class AppState {
 

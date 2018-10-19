@@ -2,7 +2,7 @@
 #define CONFIG_HPP
 
 #include <Arduino.h>
-#include "Subsystems/Display/SSD1306Ascii.h"
+#include "./Subsystems/Display/driver/SSD1306Ascii.h"
 
 const bool DEBUG = true;
 
@@ -11,36 +11,39 @@ const bool DEBUG = true;
 ///////////////////////////////////////////////////////////////////////////////
 
 /// Update interval in ms for joystick
-const uint16_t JOYSTICK_UPDATE_INTERVAL = 250;
+#define JOYSTICK_UPDATE_INTERVAL 250
 
 /// Analog pin for reading X axis of connected joystick
-const uint8_t JOYSTICK_PIN_X_AXIS = A0;
+#define JOYSTICK_PIN_X_AXIS A0
 /// Analog pin for reading Y axis of connected joystick
-const uint8_t JOYSTICK_PIN_Y_AXIS = A1;
+#define JOYSTICK_PIN_Y_AXIS A1
 /// Digital pin for reading push button status
-const uint8_t JOYSTICK_PIN_BUTTON = 2;
+#define JOYSTICK_PIN_BUTTON 2
 
 ///////////////////////////////////////////////////////////////////////////////
 // EEPROM
 ///////////////////////////////////////////////////////////////////////////////
 
 /// Number of bytes in EEPROM. Value depends on the board you are using.
-const uint16_t EEPROM_SIZE_IN_BYTES = 1024;
+#define EEPROM_SIZE_IN_BYTES 1024
 
 ///////////////////////////////////////////////////////////////////////////////
 // DISPLAY
 ///////////////////////////////////////////////////////////////////////////////
 
 // Display address for I2C connection
-const uint8_t  DISPLAY_I2C_ADDRESS = 0x3C;
-const DevType* DISPLAY_TYPE = &Adafruit128x32;
-const uint8_t* DISPLAY_FONT = System5x7;
-const uint8_t  DISPLAY_NUM_LINES = 4;
+#define DISPLAY_I2C_ADDRESS 0x3C
+#define DISPLAY_TYPE &Adafruit128x32
+#define DISPLAY_FONT System5x7
+#define DISPLAY_NUM_LINES 4
 
 ///////////////////////////////////////////////////////////////////////////////
 // DISPLAY
 ///////////////////////////////////////////////////////////////////////////////
 
-const uint8_t EVENTS_POOL_SIZE = 10;
+#define EVENTS_POOL_SIZE 10
+
+/// Number of app states. Value is used for generating list of all app states.
+#define APP_STATES_COUNT 3
 
 #endif 

@@ -1,8 +1,8 @@
 #ifndef APP_STATE_SETTINGS
 #define APP_STATE_SETTINGS
 
-#include "../AppState.hpp"
-#include "../Events/EventTypeJoystick.hpp"
+#include "AppState.hpp"
+#include "../Events/Event.hpp"
 
 class AppStateSettings : public AppState {
     void onStart();

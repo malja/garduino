@@ -1,9 +1,9 @@
 #ifndef DISPLAY_HPP
 #define DISPLAY_HPP
 
-#include "../config.hpp"
-#include "./Display/SSD1306Ascii.h"
-#include "./Display/SSD1306AsciiAvrI2c.h"
+#include "../../config.hpp"
+#include "./driver/SSD1306Ascii.h"
+#include "./driver/SSD1306AsciiAvrI2c.h"
 
 class Display {
 
@@ -12,7 +12,7 @@ class Display {
         /**
          * Connect I2C to display and setup it for writing.
          */
-        bool setup();
+        Display();
 
         /**
          * Print new line on display. Automatically adds newline at the end.
@@ -26,6 +26,7 @@ class Display {
     
     protected:
         uint8_t _line;
+        SSD1306AsciiAvrI2c _driver;
         
 };
 #endif

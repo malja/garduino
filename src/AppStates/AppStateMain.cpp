@@ -1,36 +1,46 @@
 #include "AppStateMain.hpp"
+#include "../App.hpp"
 
 void AppStateMain::onStart() {
-    this->app->display.clear();
-    this->app->display.print("BatteryLevelPlaceholder");
-    this->app->display.print("Welcome to Garduino 0.1");
+    Serial.println("Main>OnStart executed.");
+    app->display.clear();
+    app->display.print("BatteryLevelPlaceholder");
+    app->display.print("Garduino 0.1");
 }
 
 void AppStateMain::update(unsigned long long ms) {
     Event ev;
 
+    Serial.println("Main>Polling events...");
+
     // Get all events
-    while(this->app->pollEvents(&ev)) {
+    while(app->pollEvent(ev)) {
 
         // Interested only in joystick movement events
-        if (ev.type == EventType::Joystick &&
-            ev.joystick.type == EventTypeJoystick::MOVE) {
+        if (EventType::Joystick == ev.type &&
+            EventTypeJoystick::Direction == ev.joystick.type) {
 
             // Move to the rigth
-            if (ev.joystick.x_axis > 0) {
+            if (EventJoystickMoveDirection::Right == ev.joystick.direction) {
+
+                Serial.println("Main>New state - statistics");
+
                 // Show statistics
-                this->app->setState(AppStateIDs::STATISTICS);
+                this->app->switchState(AppStateIDs::Statistics);
                 break;
             } 
             
             // Move to the left
-            if (ev.joystick.x_axis < 0) {
+            if (EventJoystickMoveDirection::Left == ev.joystick.direction) {
                 // Show settings
-                this->app->setState(AppStateIDs::SETTINGS);
+
+                Serial.println("Main>New state settings");
+                this->app->switchState(AppStateIDs::Settings);
                 break;
             }
         }
     }
+    Serial.println("Main>End of polling...");
 }
 
 void AppStateMain::onExit() {

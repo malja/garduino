@@ -1,63 +1,113 @@
 #include "App.hpp"
 
+#include "AppStates/AppStateMain.hpp"
+#include "AppStates/AppStateSettings.hpp"
+#include "AppStates/AppStateStatistics.hpp"
+
 App::App() {
-    
+
 	// Fill whole _states array with NULL. This helps to check against empty cells in update method.
-	for (uint8_t i = 0; i < AppStateIDs::__MAX__; i++) {
-		this->_states[i] = nullptr;
+	for (uint8_t i = 0; i < APP_STATES_COUNT; i++) {
+		_states[i] = nullptr;
 	}
 
-	this->_current_state = 0;
+    // No current state
+	_current_state = -1;
 
-	// Fill _states array with registered app states pointers
-	this->_states[AppStateIDs::MAIN] = &app_state_main;
-	this->_states[AppStateIDs::SETTINGS] = &app_state_settings;
-	this->_states[AppStateIDs::STATISTICS] = &app_state_statistics;
-
-    // Connect to joystick
-    this->_joystick = PSJoystick();
-    this->_joystick.setup(JOYSTICK_PIN_X_AXIS, JOYSTICK_PIN_Y_AXIS, JOYSTICK_PIN_BUTTON, JOYSTICK_UPDATE_INTERVAL);
-    
     // Setup EEPROM storage
     if (DEBUG) {
-        this->storage.enableProtection();
+        //this->storage.enableProtection();
+    }
+
+    // Fill event pool with empty events
+    for(uint8_t i = 0; i < EVENTS_POOL_SIZE; i++) {
+        _events[i] = Event();
     }
 }
 
-void App::update() {
+void App::setup() {
+
+    // Register App states
+    addState(AppStateIDs::Main, new AppStateMain);
+    addState(AppStateIDs::Settings, new AppStateSettings);
+    addState(AppStateIDs::Statistics, new AppStateStatistics);
+
+    // Run Main state as first
+    switchState(AppStateIDs::Main);
+
+    _joystick.setup(JOYSTICK_PIN_X_AXIS, JOYSTICK_PIN_Y_AXIS, JOYSTICK_PIN_BUTTON, JOYSTICK_UPDATE_INTERVAL);
+}
+
+void App::run() {
 
 	// Get current time
 	unsigned long long ms = millis();
 
+    Serial.println("App>Creating events...");
     // Create event pool
     this->createEvents(ms);
 
+    Serial.println("App>Getting AppState...");
 	// Get current state or NULL when empty
 	AppState *state = this->_states[this->_current_state];
 
     // Is there any application state
     if (nullptr != state) {
         // Run app state update
+        Serial.println("App>Running AppState");
         state->update(ms);
     }
 }
 
-void App::setState(AppStateIDs id) {
+bool App::switchState(AppStateIDs id) {
 
-	// Get current state
-	AppState *state = this->_states[this->_current_state];
-
-    // Make sure to clear old state
-    if (nullptr != state) {
-        state->onExit();
+    AppState *state = nullptr;
+    
+    // Check ID
+    int8_t i = (int8_t)id;
+    if ( 0 < i || i > APP_STATES_COUNT ) {
+        return false;
     }
 
-    // Run new state
-	this->_current_state = id;
-	state = this->_states[this->_current_state];
+	// If current state is set
+    if ( -1 != _current_state) {
+	    state = _states[_current_state];
+       
+        // Make sure to clear old state
+        if (nullptr != state) {
+            state->onExit();
+        }
+    }
 
-	state->setup(this);
+    // Switch state
+	_current_state = i;
+	state = _states[_current_state];
+
+    // Prepare state for running
     state->onStart();
+}
+
+bool App::addState(AppStateIDs id, AppState *state) {
+    uint8_t i = (uint8_t)id;
+
+    // Don't allow to register app state with invalid ID
+    if (i < 0 || i > APP_STATES_COUNT) {
+        return false;
+    }
+
+    // No point in adding null
+    if (nullptr == state) {
+        return false;
+    }
+
+    // Make sure no memory is leaked
+    if (nullptr != _states[i]) {
+        delete _states[i];
+    }
+
+    // Add new state
+    _states[i] = state;
+    _states[i]->setup(this); 
 }
 
 void App::createEvents(unsigned long long ms) {
@@ -65,22 +115,36 @@ void App::createEvents(unsigned long long ms) {
 	// When event is marked with EventType::None, it means it does not hold any data
 	// This event will not be returned from polling.
 	for (uint8_t i = 0; i < EVENTS_POOL_SIZE; i++) {
-		this->_events[i].type = EventType::None;
+		_events[i].type = EventType::None;
 	}
 
-    handleJoystick(ms);
+    handleJoystickEvents(ms);
 
 }
 
-bool App::pollEvent(const Event &event) {
+bool App::pollEvent(Event &event) {
  
 	for(uint8_t i = 0; i < EVENTS_POOL_SIZE; i++) {
-        if (EventType::None != this->_events[i].type) {
-            // TODO: Copy event union
+
+        // Find valid event
+        if (EventType::None != _events[i].type) {
+
+            // Fill event structure with data
+            event = _events[i];
+
+            // Erase event in queue, so it is not used in next pollEvent call
+            _events[i].type = EventType::None;
             return true;
         }
     }
+
+    // No event found
     return false;
+}
+
+void App::addEvent(const Event &event) {
+    Event *ev = this->getFreeEventFromPool();
+    *ev = event;
 }
 
 Event* App::getFreeEventFromPool() {
@@ -92,44 +156,35 @@ Event* App::getFreeEventFromPool() {
     return &(this->_events[this->_events_count++]);
 }
 
-void App::handleJoystick(unsigned long long ms) {
+void App::handleJoystickEvents(unsigned long long ms) {
 
-    // Read joystick values
-    this->_joystick.update(ms);
+    Serial.println("App>Handling joystick.");
+
+    // Update JOystick
+    _joystick.update(ms);
     
-    // Read X and Y axis of joystick
-    int8_t x_axis = this->_joystick.getX();
-    int8_t y_axis = this->_joystick.getY();
+    EventJoystickMoveDirection direction = _joystick.getDirection();
 
-    // Joystick movement
-    if (0 != x_axis || 0 != y_axis) {
-
-        // Get pointer to one of events in pool
+    Serial.print("App>Current direction ");
+    Serial.println((int)direction);
+    
+    // Handle direction event
+    if (EventJoystickMoveDirection::None != direction) {
         Event *ev = this->getFreeEventFromPool();
-        
-        // Set event type to joystick
-        ev->type = EventType::Joystick;
 
-        // Fill joystick event
-        ev->joystick.type = EventJoystickType::MOVE;
-        ev->joystick.pressed = this->_joystick.isPressed();
-        ev->joystick.x_axis = x_axis;
-        ev->joystick.y_axis = y_axis;
+        ev->type = EventType::Joystick;
+        ev->joystick.type = EventTypeJoystick::Direction;
+        ev->joystick.direction = direction;
+        ev->joystick.x_axis = _joystick.getX();
+        ev->joystick.y_axis = _joystick.getY();
     }
+}
 
-    if (this->_joystick.isPressed()) {
-
-        // Get pointer to one of events in pool
-        Event *ev = this->getFreeEventFromPool();
-        
-        // Set event type to joystick
-        ev->type = EventType::Joystick;
-
-        // Fill joystick event
-        ev->joystick.type = EventTypeJoystick::BUTTON;
-        ev->joystick.pressed = true;
-        ev->joystick.x_axis = x_axis;
-        ev->joystick.y_axis = y_axis;
-
+App::~App() {
+    // Free memory
+    for(uint8_t i = 0; i < APP_STATES_COUNT; i++) {
+        if (nullptr != _states[i]) {
+            delete _states[i];
+        }
     }
 }

@@ -1,5 +1,6 @@
 #include "AppState.hpp"
+#include "../App.hpp"
 
 void AppState::setup(App *app) {
-    this->_app = app;
+    this->app = app;
 }

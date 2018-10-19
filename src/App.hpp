@@ -2,12 +2,11 @@
 #define APP_HPP
 
 #include "config.hpp"
-#include "Storage.hpp"
-#include "PSJoystick.hpp"
-#include "Display.hpp"
-#include "AppState.hpp"
-#include "AllStates.hpp"
-#include "Event.hpp"
+//#include "./Subsystems/Storage.hpp"
+#include "./Subsystems/Joystick/Joystick.hpp"
+#include "./Subsystems/Display/Display.hpp"
+#include "./AppStates/AppState.hpp"
+#include "./Events/Event.hpp"
 
 #include <Arduino.h>
 
@@ -15,17 +14,33 @@ class App {
 
     public:
         App();
-        void update();
+        ~App();
+
+        void setup();
+        void run();
 
 		/**
 		 * Change current app state. Old one will be paused.
 		 * @param state One of available state IDs.
+         * @return False for invalid ID (negative or out of bounds set by APP_STATES_COUNT).
 		 */
-        void setState(AppStateIDs state);
-        bool pollEvent(const Event &event);
+        bool switchState(AppStateIDs state);
+
+        /**
+         * Register new app state. Application is responsible for freeing the
+         * memory.
+         * @param id State will be available with this id.
+         * @param state Pointer to new AppState instance.
+         * @return False for invalid ID (negative or out of bounds set by APP_STATES_COUNT) or
+         * null state pointer.
+         */
+        bool addState(AppStateIDs id, AppState *state);
+
+        bool pollEvent(Event &event);
+        void addEvent(const Event &event);
 
         Display display;
-        Storage storage;
+        //Storage storage;
     
     protected:
 
@@ -37,7 +52,7 @@ class App {
         /**
          * Read data from joystick and create events if necessary.
          */
-        void handleJoystick(unsigned long long ms);
+        void handleJoystickEvents(unsigned long long ms);
 
         /**
          * Find event in _events array, which is not yet used and return it. Alternativelly remove the oldest event
@@ -50,10 +65,11 @@ class App {
         uint8_t _events_count;	///< Holds index of last inserted event.
 
 		// List of app states
-        AppState *_states[AppStateIDs::__MAX__];
-		uint8_t _current_state;
+        AppState *_states[APP_STATES_COUNT];
+		int8_t _current_state;  ///< Holds one of AppStateIDs' values or -1. If positive, it sets current state.
+                                ///< -1 means there is no current state set.
 
-        PSJoystick _joystick;
+        Joystick _joystick;
 };
 
 #endif

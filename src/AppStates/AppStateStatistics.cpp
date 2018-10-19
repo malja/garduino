@@ -1,19 +1,20 @@
 #include "AppStateStatistics.hpp"
+#include "../App.hpp"
 
 void AppStateStatistics::onStart() {
-    this->app->display.clear();
-    this->app->display.print("Settings");
+    app->display.clear();
+    app->display.print("Settings");
 }
 
 void AppStateStatistics::update(unsigned long long ms) {
     Event event;
-    while(this->app->pollEvent(&event)) {
-        if (EventType::Joystick == event.type && EventTypeJoystick::MOVE == event.joystick.type) {
+    while(app->pollEvent(event)) {
+        if (EventType::Joystick == event.type && EventTypeJoystick::Direction == event.joystick.type) {
 
             // Move right
-            if (event.joystick.x_axis > 0) {
+            if (EventJoystickMoveDirection::Right == event.joystick.direction) {
                 // Back to main display
-                this->app->setState(AppStateIDs::MAIN);
+                app->switchState(AppStateIDs::Main);
                 break;
             }
         }
