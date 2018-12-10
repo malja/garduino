@@ -2,7 +2,7 @@
 #define APP_HPP
 
 #include "config.hpp"
-//#include "./Subsystems/Storage.hpp"
+#include "./Subsystems/Storage.hpp"
 #include "Subsystems/Joystick/Joystick.hpp"
 #include "Subsystems/Display/SSD1306AsciiAvrI2c.h"
 #include "Menu/MenuScreen.hpp"
@@ -26,7 +26,7 @@ class App {
          * `loop` functions. App instance is created outside of those functions
          * and thus calling just the constructor is not enought.
          */
-        void setup();
+        bool setup();
 
         /**
          * This method should be called in Arduino's `loop` function. It consist
@@ -70,7 +70,7 @@ class App {
          */
         SSD1306AsciiAvrI2c display;
 
-        //Storage storage;
+        Storage storage;
     
     protected:
 

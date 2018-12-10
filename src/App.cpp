@@ -1,9 +1,5 @@
 #include "App.hpp"
 
-#include "AppStates/AppStateMain.hpp"
-#include "AppStates/AppStateSettings.hpp"
-#include "AppStates/AppStateStatistics.hpp"
-
 App::App() {
 
 	// Fill whole _screens array with NULL. This helps to check against empty cells in update method.
@@ -25,26 +21,53 @@ App::App() {
     }
 }
 
-void App::setup() {
+bool App::setup() {
 
-    addScreen(MenuScreen::Id::Main, new MenuScreen("Welcome", (MenuItem**){
-        new MenuItem("Settings", -1, MenuScreen::Id::Settings),
-        new MenuItem("Statistics", -1, MenuScreen::Id::Statistics),
-        nullptr
-    }));
+    // Connect to EEPROM
+    if (!storage.setup(STORAGE_OFFSET_IN_BYTES, STORAGE_SIZE_IN_BYTES)) {
+        Serial.println("App>Setup: Storage setup failed.");
+        return false;
+    }
 
-    addScreen(MenuScreen::Id::Settings, new MenuScreen("Settings", (MenuItem**){
-        new MenuItem("Hum. thrsld", RUNTIME_DEFAULT_HUMIDITY_THRESHOLD, MenuScreen::Id::None),
-        new MenuItem("l/watering", RUNTIME_DEFAULT_WATERING_LITERS, MenuScreen::Id::None),
-        new MenuItem("Back", -1, MenuScreen::Id::Main),
-        nullptr
-    }));
-    addScreen(MenuScreen::Id::Statistics, new MenuScreen("Statistics", (MenuItem **){
-        new MenuItem("Ttl liters", -1, MenuScreen::Id::None),
-        new MenuItem("Cur. humidity", -1, MenuScreen::Id::None),
-        new MenuItem("Back", -1, MenuScreen::Id::Main),
-        nullptr
-    }));
+    Serial.println("App>Setup: Storage setup is done");
+
+    // If there are no data, write defaults
+    if (storage.isEmpty()) {
+        Serial.println("App>Setup: Storage is empty.");
+        if (
+            !storage.write(HUMIDITY_THRESHOLD_INDEX, DEFAULT_HUMIDITY_THRESHOLD) ||
+            !storage.write(LITERS_PER_WATERING_INDEX, DEFAULT_LITERS_PER_WATERING) ||
+            !storage.write(HUMIDITY_CHECK_INTERVAL_INDEX, DEFAULT_HUMIDITY_CHECK_INTERVAL) ||
+            !storage.write(LITERS_TOTAL_INDEX, DEFAULT_LITERS_TOTAL) ||
+            !storage.write(LAST_HUMIDITY_INDEX, DEFAULT_LAST_HUMIDITY)
+        ){
+            Serial.println("App>Setup: Unable to write defaults.");
+            return false;
+        }
+        Serial.println("App>Setup: Defaults written.");
+        storage.print();
+    }
+
+    addScreen(MenuScreen::Id::Main, new MenuScreen("Welcome", 2, 
+            new MenuItem("Settings", -1, MenuScreen::Id::Settings),
+            new MenuItem("Statistics", -1, MenuScreen::Id::Statistics)
+        )
+    );
+
+    addScreen(MenuScreen::Id::Settings, new MenuScreen("Settings", 4,
+            new MenuItem("Hum. thrsld", HUMIDITY_THRESHOLD_INDEX, -1),
+            new MenuItem("l/watering", LITERS_PER_WATERING_INDEX, -1),
+            new MenuItem("Chck interval", HUMIDITY_CHECK_INTERVAL_INDEX, -1),
+            new MenuItem("Back", -1, MenuScreen::Id::Main)
+        )
+    );
+    
+    addScreen(MenuScreen::Id::Statistics, new MenuScreen("Statistics", 3,
+            new MenuItem("Total liters", LITERS_TOTAL_INDEX, -1),
+            new MenuItem("Cur. humidity", LAST_HUMIDITY_INDEX, -1),
+            new MenuItem("Back", -1, MenuScreen::Id::Main)
+        )
+    );
 
     // Set current screen
     switchScreen(MenuScreen::Id::Main);
@@ -58,30 +81,26 @@ void App::setup() {
     display.clear();
     
     // Attach interruption for water meter pulse counting
-    attachInterrupt(digitalPinToInterrupt(INTERRUPTIONS_PIN_WATER_METER), onWaterMeterPulse, FALLING);
+    //attachInterrupt(digitalPinToInterrupt(INTERRUPTIONS_PIN_WATER_METER), onWaterMeterPulse, FALLING);
+    return true;
 }
 
 void App::run() {
 
 	// Get current time
-	unsigned long long ms = millis();
-
-    Serial.println("App>Creating events...");
+	time_ms ms = millis();
     
     // Create event pool
     this->createEvents(ms);
 
     // Search for events which should be handled at application level
-    this->handleSystemEvents();
+    //this->handleSystemEvents();
 
-    Serial.println("App>Getting screen...");
-	
     // Get current screen or NULL when empty
 	MenuScreen *screen = this->_screens[this->_current_screen];
 
     // Is there any screen set
     if (nullptr != screen) {
-        Serial.println("App>Running screen");
         screen->update(ms);
     }
 }
@@ -89,20 +108,23 @@ void App::run() {
 bool App::switchScreen(MenuScreen::Id id) {
     
     // Check ID
-    int8_t i = (int8_t)id;
-    if ( 0 < i || i > APP_SCREENS_COUNT ) {
+    uint8_t i = (uint8_t)id;
+
+    if ( 0 > i || i > APP_SCREENS_COUNT - 1 ) {
         return false;
     }
 
     // Switch state
 	_current_screen = i;
+    _screens[_current_screen]->onEnter();
+    return true;
 }
 
 bool App::addScreen(MenuScreen::Id id, MenuScreen *screen) {
     uint8_t i = (uint8_t)id;
 
     // Don't allow to register screen with invalid ID
-    if (i < 0 || i > APP_SCREENS_COUNT) {
+    if (i < 0 || i > APP_SCREENS_COUNT - 1) {
         return false;
     }
 
@@ -159,15 +181,11 @@ Event* App::getFreeEventFromPool() {
 
 void App::handleJoystickEvents(unsigned long long ms) {
 
-    Serial.println("App>Handling joystick.");
 
     // Update JOystick
     _joystick.update(ms);
     
     EventJoystickMoveDirection direction = _joystick.getDirection();
-
-    Serial.print("App>Current direction ");
-    Serial.println((int)direction);
     
     // Handle direction event
     if (EventJoystickMoveDirection::None != direction) {
@@ -175,6 +193,18 @@ void App::handleJoystickEvents(unsigned long long ms) {
 
         ev->type = EventType::Joystick;
         ev->joystick.type = EventTypeJoystick::Direction;
+        ev->joystick.direction = direction;
+        ev->joystick.x_axis = _joystick.getX();
+        ev->joystick.y_axis = _joystick.getY();
+    }
+
+    // Handle click events
+    if (_joystick.isClicked()) {
+
+        Event *ev = this->getFreeEventFromPool();
+
+        ev->type = EventType::Joystick;
+        ev->joystick.type = EventTypeJoystick::Click;
         ev->joystick.direction = direction;
         ev->joystick.x_axis = _joystick.getX();
         ev->joystick.y_axis = _joystick.getY();
