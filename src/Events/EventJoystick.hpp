@@ -17,7 +17,9 @@ typedef enum class EventJoystickMoveDirection {
 typedef enum class EventTypeJoystick {
     Move,       ///< Joystick move
     Direction,
-    Button,      ///< Joystick button was pressed
+    Button,      ///< Joystick button pressed
+    Click,       ///< Joystick button clicked. This is similar to Direction event type.
+                 ///  Click is registered only once per second (or so).
     None
 } EventTypeJoystick;
 
