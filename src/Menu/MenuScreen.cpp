@@ -1,34 +1,58 @@
 #include "MenuScreen.hpp"
+#include "../App.hpp"
 
-MenuScreen::MenuScreen(const char *title, MenuItem *items[] ) {
+MenuScreen::MenuScreen(String title, uint8_t numOfItems, ... ) {
     
-    // Copy title
-    snprintf(_title, MENU_HEADER_LENGTH, "%s", title);
+    _title = title;
+    va_list items;
+
+    _items = new MenuItem *[numOfItems];
+
+    va_start(items, numOfItems);
     
-    u8 count = 0;
-    for (; items[count]; count++);
-    _items = items;
+    // Count number of items in array
+    uint8_t count = 0;
+    for (; count < numOfItems; count++) {
+        _items[count] = va_arg(items, MenuItem *);
+    }
+
+    va_end(items);
 
     _num_of_items = count;
     _selected_item = 0;
     _edit_mode = false;
+    _changed_since_last_render = true;
 }
 
 void MenuScreen::setup(App *app) {
     _app = app;
 }
 
-bool MenuScreen::selectItem(u8 index) {
+void MenuScreen::enterEditMode() {
+    _edit_mode = true;
+    _changed_since_last_render = true;
+}
+
+bool MenuScreen::selectItem(uint8_t index) {
     if (index >= _num_of_items) {
         return false;
     }
 
     _selected_item = index;
+    _changed_since_last_render = true;
     return true;
+}
+
+void MenuScreen::onEnter() {
+    _changed_since_last_render = true;
 }
 
 MenuItem *MenuScreen::getSelectedItem() {
     return _items[_selected_item];
+}
+
+App *MenuScreen::getApp() {
+    return _app;
 }
 
 void MenuScreen::update(time_ms ms) {
@@ -38,7 +62,19 @@ void MenuScreen::update(time_ms ms) {
 
 void MenuScreen::render() {
 
+    if (!_changed_since_last_render) {
+        return;
+    }
+
+    _app->display.clear();
+    _changed_since_last_render = false;
+
     if (_edit_mode) {
+        // If somehow edit mode is executed for item without value
+        if (-1 == _items[_selected_item]->getValueIndex()) {
+            _edit_mode = false;
+            return;
+        }
 
         // | MENU ITEM TEXT   |
         // |                  |
@@ -46,13 +82,13 @@ void MenuScreen::render() {
 
         _app->display.clear();
         _app->display.set2X();
-        _app->display.write( _items[_selected_item]->text );
+        _app->display.write( _items[_selected_item]->getText().c_str() );
         
         _app->display.set1X();
         _app->display.setCursor(0, 3);
         _app->display.write("< ");
 
-        _app->display.write(_items[_selected_item]->value);
+        _app->display.print( _items[_selected_item]->getValue() );
         
         _app->display.setCursor(
             _app->display.displayWidth() - _app->display.fontWidth(), 
@@ -64,22 +100,12 @@ void MenuScreen::render() {
     }
 
     // Render list of items
+    uint8_t first_index = _selected_item - 1 <= 0 ? 0 : _selected_item - 1;
+    uint8_t last_index = min(first_index + DISPLAY_NUM_LINES - 1, _num_of_items-1);
 
-    u8 first_index = 0;
-    u8 last_index = DISPLAY_NUM_LINES;
+    uint8_t line = 1;
+    for (uint8_t i = first_index; i <= last_index; i++) {
 
-    // Which page are we on. Each page consist of DISPLAY_NUM_LINES lines.
-    float page = (_selected_item+1)/DISPLAY_NUM_LINES;
-
-    // We are not on the first page
-    if ( page > 1) {
-        first_index = (int) page * DISPLAY_NUM_CHARACTERS;
-        last_index = min( first_index + DISPLAY_NUM_CHARACTERS, _num_of_items );
-    }
-
-    u8 line = 1;
-    for (u8 i = first_index; i < last_index; i++) {
-        
         // > MENU ITEM TEXT: VALUE
         if (_selected_item == i) {
             _app->display.setCursor(0, line);
@@ -87,12 +113,23 @@ void MenuScreen::render() {
         }
 
         _app->display.setCursor(_app->display.fontWidth() * 3, line);
-        _app->display.print(_items[i]->text);
-        _app->display.print(": ");
-        _app->display.print(_items[i]->value);
+        _app->display.print(_items[i]->getText().c_str());
+
+        // Is there a value?
+        if (-1 != _items[i]->getValueIndex()) {
+            // Update it
+            uint32_t value = 0;
+            _app->storage.read((uint8_t)_items[i]->getValueIndex(), value); // Ignoring return value
+            _items[i]->setValue(value);
+
+            // And print it
+            _app->display.print(": ");
+            _app->display.print(_items[i]->getValue());
+        }
 
         line++;
     }
+
 }
 
 void MenuScreen::handleEvents() {
@@ -105,21 +142,27 @@ void MenuScreen::handleEvents() {
             // If in edit mode
             if (_edit_mode) { 
 
+                MenuItem *item = (MenuItem*)_items[_selected_item];
+
                 // Direction changes will increment or decrement the value   
                 if (EventTypeJoystick::Direction == ev.joystick.type) {
-                
-                    MenuItem *item = (MenuItem*)_items[_selected_item];
 
                     if (EventJoystickMoveDirection::Left == ev.joystick.direction) {    
-                        item->value -= 1;
+                        item->setValue(item->getValue() - 1);
                     } else if (EventJoystickMoveDirection::Right == ev.joystick.direction) {
-                        item->value += 1;
+                        item->setValue(item->getValue() + 1);
                     }
 
                 // Click ends edit mode
                 } else if (EventTypeJoystick::Click == ev.joystick.type) {
+                    if (!_app->storage.update(item->getValueIndex(), item->getValue())) {
+                        // TODO: Handle error 
+                        Serial.println("MenuScreen>handleEvents: Failed to update storage value");
+                    }
                     _edit_mode = false;
                 }
+
+                _changed_since_last_render = true;
 
             // In standard (non-edit) mode
             } else {
@@ -128,24 +171,20 @@ void MenuScreen::handleEvents() {
                 if (EventTypeJoystick::Direction == ev.joystick.type) {
 
                     if (EventJoystickMoveDirection::Up == ev.joystick.direction) {    
-                        _selected_item -= 1;
-                    } else if (EventJoystickMoveDirection::Right == ev.joystick.direction) {
-                        _selected_item += 1;
-                    }
-
-                    if (_selected_item >= _num_of_items) {
-                        _selected_item = 0;
-                    } else if (_selected_item < 0) {
-                        _selected_item = _num_of_items-1;
+                        _selected_item = (_selected_item - 1) < 0 ? (_num_of_items - 1) : (_selected_item - 1);
+                        _changed_since_last_render = true;
+                    } else if (EventJoystickMoveDirection::Down == ev.joystick.direction) {
+                        _selected_item = (_selected_item + 1) == _num_of_items ? 0 : (_selected_item + 1);
+                        _changed_since_last_render = true;
                     }
 
                 // Click enters edit mode or follows the link
                 } else if (EventTypeJoystick::Click == ev.joystick.type) {
-                    MenuItem *item = (MenuItem*)_items[_selected_item];
-                    if (item->link) {
-                        _app->changeScreen(item->link);
-                    } else {
-                        _edit_mode;
+                    if (_items[_selected_item]->getScreenId() >= 0) {
+                        _app->switchScreen((MenuScreen::Id)_items[_selected_item]->getScreenId());
+                        _changed_since_last_render = true;
+                    } else if (_items[_selected_item]->getValueIndex() >= 0) {
+                        enterEditMode();
                     }
                 }
             }
@@ -154,9 +193,10 @@ void MenuScreen::handleEvents() {
 }
 
 MenuScreen::~MenuScreen() {
-    for(u8 i = 0; i < _num_of_items; i++) {
+    for(uint8_t i = 0; i < _num_of_items; i++) {
         if (nullptr != _items[i]) {
             delete _items[i];
         }
     }
+    delete _items;
 }
