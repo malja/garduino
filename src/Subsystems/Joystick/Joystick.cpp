@@ -3,6 +3,7 @@
 Joystick::Joystick() {
     _last_direction = EventJoystickMoveDirection::None;
     _last_direction_reported = 0;
+    _last_click_reported = 0;
 }
 
 void Joystick::update(time_ms ms) {
@@ -12,13 +13,7 @@ void Joystick::update(time_ms ms) {
     if (ms - _last_direction_reported > 1000) {
         // Check current direction
         if (abs(getX()) > 20 || abs(getY()) > 20) {
-            Serial.println("Joystick>Direction updated");
 
-            Serial.print("X = ");
-            Serial.print(getX());
-            Serial.print(" Y = ");
-            Serial.println(getY());
-            
             if (abs(getX()) >= abs(getY())) {
                 if (getX() > 0) {
                     _last_direction = EventJoystickMoveDirection::Right;
@@ -26,7 +21,7 @@ void Joystick::update(time_ms ms) {
                     _last_direction = EventJoystickMoveDirection::Left;    
                 }
             } else {
-                if (getY() > 0) {
+                if (getY() < 0) {
                     _last_direction = EventJoystickMoveDirection::Up;
                 } else {
                     _last_direction = EventJoystickMoveDirection::Down;
@@ -35,17 +30,30 @@ void Joystick::update(time_ms ms) {
 
             _last_direction_reported = ms;
         } else {
-            Serial.println("Joystick>Direction reset");
             _last_direction = EventJoystickMoveDirection::None;
+        }
+
+    } 
+    
+    if (ms - _last_click_reported > 1000) {
+        if (isPressed()) {
+            _last_clicked = true;
+            _last_click_reported = ms;
+        } else {
+            _last_clicked = false;
         }
     }
 }
 
 EventJoystickMoveDirection Joystick::getDirection() {
-
-    Serial.println("Joystick>Direction returned and reset");
     EventJoystickMoveDirection direction = _last_direction;
     _last_direction = EventJoystickMoveDirection::None;
     
     return direction;
+}
+
+bool Joystick::isClicked() {
+    bool tmp = _last_clicked;
+    _last_clicked = false;
+    return tmp;
 }

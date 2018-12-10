@@ -45,17 +45,6 @@ class PSJoystick {
                 this->pos_x = analogRead(this->pin_x) - this->pos_x_zero;
                 this->pos_y = analogRead(this->pin_y) - this->pos_y_zero;
 
-                Serial.println("PSJoystick>Raw");
-                Serial.print("Zero x= ");
-                Serial.print(pos_x_zero);
-                Serial.print(" y = ");
-                Serial.println(pos_y_zero);
-
-                Serial.print("X = ");
-                Serial.print(pos_x);
-                Serial.print(" Y = ");
-                Serial.println(pos_y);
-
                 if (this->pos_x > 0) {
                     this->pos_x = map(this->pos_x, 0, 1023-this->pos_x_zero, 0, 100);
                 } else {
@@ -67,12 +56,6 @@ class PSJoystick {
                 } else {
                     this->pos_y = map(this->pos_y, 0, -this->pos_y_zero, 0, -100);
                 }
-
-                Serial.print("X2 = ");
-                Serial.print(pos_x);
-                Serial.print(" Y2 = ");
-                Serial.println(pos_y);
-                Serial.println("----------------------------------");
 
                 this->last_update = current_ms;
             }

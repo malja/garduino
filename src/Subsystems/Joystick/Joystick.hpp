@@ -1,10 +1,10 @@
 #ifndef JOYSTICK_HPP
 #define JOYSTICK_HPP
 
-#include "Helpers/typedefs.hpp"
-#include "Events/EventJoystick.hpp"
-#include "config.hpp"
-#include "Subsystems/Joystick/PSJoystick.hpp"
+#include "../../Helpers/typedefs.hpp"
+#include "../../Events/EventJoystick.hpp"
+#include "../../config.hpp"
+#include "../../Subsystems/Joystick/PSJoystick.hpp"
 
 class Joystick : public PSJoystick {
 
@@ -18,13 +18,16 @@ class Joystick : public PSJoystick {
          * joystick movement.
          */
         EventJoystickMoveDirection getDirection();
+        bool isClicked();
         void update(time_ms m);
 
     protected:
 
         time_ms _last_direction_reported;
-        EventJoystickMoveDirection _last_direction;
+        time_ms _last_click_reported;
 
+        bool _last_clicked;
+        EventJoystickMoveDirection _last_direction;
 };
 
 #endif
