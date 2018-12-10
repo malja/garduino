@@ -1,23 +1,30 @@
-#include "src/garduino.hpp"
-//#include "src/Subsystems/Joystick/Joystick.hpp"
+#include "src/App.hpp"
 
-//Joystick j;
+App garduino;
+
+void blink() {
+
+    pinMode(LED_BUILTIN, OUTPUT);
+    time_ms ms = millis();
+
+
+    while(true) {
+        if (millis() - ms > 1000) {
+            digitalWrite(LED_BUILTIN, 1 ^ digitalRead(LED_BUILTIN));
+            ms = millis();
+        }
+    }
+}
+
 void setup() {
     Serial.begin(9600);
 
-    garduino.setup();
-    //j.setup(A0, A1, 2, 250);
+    if (!garduino.setup()){
+        blink();
+    }
+
 }
 
 void loop() {
-    //j.update(millis());
-    garduino.run();
-
-    /*Serial.print("X = ");
-    Serial.print(j.getX());
-    Serial.print(" Y = ");
-    Serial.println(j.getY());
-    
-    Serial.print("Direction: ");
-    Serial.println((int)j.getDirection());*/
+  garduino.run();
 }
