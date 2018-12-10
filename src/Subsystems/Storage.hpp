@@ -1,171 +1,229 @@
 #ifndef STORAGE_H
 #define STORAGE_H
 
-#include "../config.hpp"
 #include <Arduino.h>
+#include <EEPROM.h>
 
-/*
-Hlavička
-========
-
-12345678 - 8bit podpis - vždy pevná hodnota 11011011
-12345678 
-    1234 - 4bit hodnota určující celkovou velikost paměti v bajtech, kde 1 znamená 2^6 a 6 znamená 2^12. Poslední bit vždy nula.
-       5 - 1bit stav paměti, 1 - nebyl detekován problém, 0 - byl detekován problém
-     678 - 3bit - ???
-12345678 - 8bit - počet proměnných v paměti
-12345678 - 8bit hodnota udávající počet prvků v normálním poli (Jsou dva typy - normální a často měněná)
-
-
-Hodnota
-=======
-
-12345678 - 8bit - ID proměnné
-12345678
-       1 - 1bit - typ proměnné (1 - normální, 0 - často měněná)
- 2345678 - 7bit - určující počet bajtů v jedné proměnné
-- Následují data
-*/
-
-
+#include "../config.hpp"
+#include "StorageCache.hpp"
 
 /**
- * Storage class manage EEPROM storage. Main purpose is to prevent fast memory
- * cell wear out. 
+ * Storage class handle storing data in EEPROM. Data is persistent between bootups.
+ * Because writing into EEPROM wears it out, Storage class moves variables across
+ * whole space dedicated in EEPROM.
  * 
- * Header
- * ======
+ * To make sure data in EEPROM is untouched, on every bootup, content is checked
+ * for Storage header. It's one byte containing value 0b11011011. In addition
+ * it marks begining of EEPROM space dedicated to Storage. After Storage header,
+ * variables are stored.
  * 
- * EEPROM memory begins with a header. It contains all information for managing
- * data. It consists of 4 bytes.
- * 
- *     ------------------- <- Base EEPROM address
- *     | Storage Mark    |
- *     |-----------------|
- *     | Memory Settings |
- *     |-----------------|
- *     | # of variables  |
- *     |-----------------|
- *     | # of elements   |
- *     |-----------------| <- First memory cell address
- *     | ... Data ...    |
- *
- * - **Storage Mark** is hardcoded 8bit value which marks the begining of
- *   Storage space. It always contains binary value `11011011`. When new storage
- *   object is created, `base EEPROM address` passed to constructor should point
- *   to Storage Mark. If not, new storage header structure will be created
- *   starting at `base EEPROM address`.
- * - **Memory Settings** contains three different things:
- *   - 4 bits - Memory size in 2^x bytes, where x is a value from 6 to 12. To represent
- *              this range, decimal value 1 stored in those 4 bits means x=6. On
- *              the other hand, decimal value of 6 means x=12.
- *   - 1 bit  - Memory status. 1 means no memory IO error was detected. 0 means
- *              at least one IO error. After this, each memory related operation
- *              will fail.
- *   - 3 bits - CRC of all header values.
- *  - **# of variables** - Third byte stores number of variables. This number
- *    cannot change during runtime. All available bytes (Memory size - header
- *    size) are equaly divided into this number of variables.
- *  - **# of elements** - Last byte contains number of elements in standard
- *    variable array. There are two types of variable arrays - standard and
- *    volatile. The volatile array type has twice as many elements, as the
- *    standard. 
- *     
- * Storage uses two array for each stored variable. First one
- * stores the actual value. Each time value should be rewritten, the actual
- * value is written to next element in the array. This increase each cell
- * lifespan. 
- * Second array holds information about in which element of the first array the
- * value is stored. Each time value changes its position, counter is increased
- * and written to the next cell. When counter value reaches 255, it overflows
- * back to 0. At this moment, whole array has to be checked. If both 255 and 0
- * values are present, 0 means latest value.
- * 
- * Background
- * ==========
- * 
- * This approach was selected because of two reasons. 
- * 
- * 1) Corrupting one cell may damage adjacent cells as well. Or take the whole
- *    EEPROM memory down with it. This means that as first corrupted cell is
- *    detected, memory is considered unusable.
- * 2) 
+ * Each variable is stored as 5 bytes. First one contains variable index - unique
+ * ID. First bit of index is storing variable state. 0 means slot contains older
+ * value and 1 means value is up to date.
+ * Rest 4 bytes contain actual value. See Storage::Container::Variable for 
+ * structure.
  */
-
-/*
-1B - 1
-4B - 1
-2B - 0
-16B - 0
-12B - 1
-===
-35B
-
-150B
-/
-(
-    1B
-    +
-    4B
-    +
-    2B*2
-    +
-    16B*2
-    +12B
-) = 150/53 = 2,8 => 2
-
-2B
-16B
-16B
-64B
-24B
-====
-*/
-
 class Storage {
 
     public:
 
         /**
-         * Add new value to EEPROM.
-         * @param value Value to be stored.
-         * @returns Value address.
+         * Container is small wrapper around variable to help handle operations
+         * with variable index.
          */
-        template <typename T>
-        uint16_t store(const T &value);
+        struct Container {
+
+            Container() {
+                address = 0;
+                variable.index = 0;
+                variable.value = 0;
+            }
+
+            /**
+             * Return size of variable in bytes.
+             */
+            inline static uint8_t getVariableSize() {
+                return sizeof(Variable);
+            }
+
+            /**
+             * If index's first bit is 1, value is up to date.
+             */
+            inline bool isUpToDate() const {
+                return variable.index >> 7 == 1;
+            }
+
+            /**
+             * Return actual index without first bit. 
+             */
+            uint8_t getIndex() const {
+                return variable.index & ~(1 << 7);
+            }
+
+            /**
+             * Switch first bit of index to zero and thus make it invalid.
+             */
+            inline void invalidate() {
+                variable.index = getIndex();
+            }
+
+            /**
+             * Switch first bit of index to one and make it valid again.
+             */
+            inline void makeValid() {
+                variable.index |= (1 << 7);
+            }
+
+            inline bool isFree() const {
+                return !isUpToDate() && variable.value == UINT32_MAX;
+            }
+
+            inline void setFree() {
+                invalidate();
+                variable.value = UINT32_MAX;
+            }
+
+            /**
+             * Actual structure stored in EEPROM.
+             */
+            struct Variable {
+                uint8_t index;    ///< Unique variable ID.
+                uint32_t value;   ///< Content of the variable.
+            };
+
+            uint16_t address;   ///< Address of EEPROM memory variable was read from.
+
+            Variable variable;  ///< Variable itself.
+        };
+
+        
 
         /**
-         * Return value from EEPROM.
-         * @param address Address from which should be the value read.
-         * @param value Address of memory, which should be filled with new value.
-         * @returns True if value was returned properly.
+         * Make sure current header in EEPROM is valid and up to date.
+         * @param start_offset Offset in bytes counted from EEPROM begining.
+         * @param memory_size EEPROM memory size in bytes.
+         * @return If memory is prepared.
          */
-        template <typename T>
-        bool read(uint16_t address, const T &value);
+        bool setup(const uint16_t start_offset, const uint16_t memory_size);
 
         /**
-         * Write value to EEPROM addres. If values don't differ, it will not be updated.
-         * @param value Value to store.
-         * @param address Addres to store value.
-         * @return True if address was updated.
+         * Create new value stored in EEPROM. This method MUST NOT be
+         * used for updating already written variables.
+         * @param index ID of value.
+         * @returns If value was stored.
+         * @see update
          */
-        template <typename T>
-        bool write(const T &value, uint16_t address);
+        bool write(const uint8_t index, const uint32_t value);
 
         /**
-         * Enables write protection. After 256 writes into EEPROM, writing will
+         * Update already existing variable stored in EEPROM. This method MUST NOT
+         * be used for creating new variables.
+         * @param index ID of value.
+         * @param value New value.
+         * @returns If value was updated.
+         * @see write
+         */
+        bool update(const uint8_t index, const uint32_t value);
+
+        inline bool read(const uint8_t index, uint32_t &value) const {
+            return _cache.retrive(index, value);
+        }
+
+        /**
+         * Enable write protection. After 256 writes into EEPROM, writing will
          * be disabled. This functionality is to protect agains ruining
          * EEPROM memory during testing.
          */
-        void enableProtection();
+        inline void enableProtection() {
+            _protection = true;
+        }
+
+        /**
+         * Remove all stored values and write header again. 
+         */
+        bool clear();
+
+        /**
+         * Return address of beginning of EEPROM block allocated for Storage.
+         * After calling setup(), this address should point to Storage header.
+         */
+        uint16_t getMemoryBeginningAddress() const {
+            return _beginning_address;
+        }
+
+        uint16_t getMemoryEndAddress() const {
+            return _end_address;
+        }
+
+        /**
+         * Return Header's size in bytes.
+         */
+        inline uint8_t getHeaderSize() const {
+            return 1;
+        }
+
+        /**
+         * When whole memory is zeroed, returns true.
+        */
+        inline bool isEmpty() const {
+            return _is_empty;
+        }
+
+        void print() const;
 
     protected:
 
-        /// Next address usable for storing value.
-        uint16_t _next_address;
+        /**
+         * Make sure header is stored at first address allocated for Storage. If so, cache is updated.
+         * On the other hand, whole EEPROM block dedicated for Storage is cleaned and header is written.
+         */
+        bool prepareMemory();
+
+        /**
+         * Fill cache with data from EEPROM. This method is called on each startup, to load data into
+         * RAM memory. Readings are done from cache. Only when value is updated, both values in cache 
+         * and EEPROM are updated.
+         */
+        bool populateCache();
+
+        /**
+         * Update _next_address_to_write to next free address for writing.
+         */
+        bool findEmptyCell(uint16_t &emptyAddress);
+
+        /**
+         * Fill all EEPROM dedicated to storage with zeroes. 
+         */
+        bool clearData();
+        
+        /**
+         * Return value from EEPROM.
+         * @param index Address from which should be the value read.
+         * @param container Container with variable, where should data be stored.
+         * @returns True if value was returned properly.
+         */
+        bool rawRead(const uint8_t index, Storage::Container &container) const;
+
+        /**
+         * Finds up to date variable with required index and returns its address inside EEPROM. 
+         */
+        bool getAddressFromIndex(const uint8_t index, uint16_t &address) const;
+
+        uint16_t _beginning_address;        ///< Address of beginning of the block allocated for Storage.
+                                            ///< This address is filled with Header.
+        uint16_t _end_address;              ///< Address of last EEPROM cell usable with Storage.
+
+        uint16_t _last_written_address;     ///< Last written address. Searching for address next time should be written to, is starting from this point.
 
         /// Counts writes into EEPROM for protection agains unwanted ruining memory.
-        uint8_t _protection;
+        uint8_t _protection_counter;
+        bool _protection;
+
+        bool _is_empty;                     ///< When prepareMemory is called on EEPROM without header, and whole
+                                            ///< memory is cleaned, this flag is set to true. In this case, default
+                                            ///< values from config are written.
+
+        StorageCache _cache;
 };
 
 #endif
