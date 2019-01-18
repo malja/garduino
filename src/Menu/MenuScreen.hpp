@@ -7,8 +7,6 @@
 #include "../Events/Event.hpp"
 #include "./MenuItem.hpp"
 
-class App;
-
 class MenuScreen {
 
     public:
@@ -21,9 +19,6 @@ class MenuScreen {
         } Id;
 
         MenuScreen(String title, uint8_t numOfItems, ... );
-
-        void setup(App *app);
-
         ~MenuScreen();
 
         bool selectItem(uint8_t index);
@@ -35,12 +30,9 @@ class MenuScreen {
         void update(time_ms ms);
         void render();
 
-        App *getApp();
         void onEnter();
 
     protected:
-
-        App *_app;
 
         String _title;
 

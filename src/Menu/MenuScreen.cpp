@@ -1,5 +1,5 @@
 #include "MenuScreen.hpp"
-#include "../App.hpp"
+#include "App.hpp"
 
 MenuScreen::MenuScreen(String title, uint8_t numOfItems, ... ) {
     
@@ -22,10 +22,6 @@ MenuScreen::MenuScreen(String title, uint8_t numOfItems, ... ) {
     _selected_item = 0;
     _edit_mode = false;
     _changed_since_last_render = true;
-}
-
-void MenuScreen::setup(App *app) {
-    _app = app;
 }
 
 void MenuScreen::enterEditMode() {
@@ -51,10 +47,6 @@ MenuItem *MenuScreen::getSelectedItem() {
     return _items[_selected_item];
 }
 
-App *MenuScreen::getApp() {
-    return _app;
-}
-
 void MenuScreen::update(time_ms ms) {
     handleEvents();
     render();
@@ -66,7 +58,9 @@ void MenuScreen::render() {
         return;
     }
 
-    _app->display.clear();
+    App app = App::getInstance();
+    
+    app->display.clear();
     _changed_since_last_render = false;
 
     if (_edit_mode) {
@@ -80,21 +74,21 @@ void MenuScreen::render() {
         // |                  |
         // | < VALUE        > |
 
-        _app->display.clear();
-        _app->display.set2X();
-        _app->display.write( _items[_selected_item]->getText().c_str() );
+        app->display.clear();
+        app->display.set2X();
+        app->display.write( _items[_selected_item]->getText().c_str() );
         
-        _app->display.set1X();
-        _app->display.setCursor(0, 3);
-        _app->display.write("< ");
+        app->display.set1X();
+        app->display.setCursor(0, 3);
+        app->display.write("< ");
 
-        _app->display.print( _items[_selected_item]->getValue() );
+        app->display.print( _items[_selected_item]->getValue() );
         
-        _app->display.setCursor(
-            _app->display.displayWidth() - _app->display.fontWidth(), 
+        app->display.setCursor(
+            app->display.displayWidth() - app->display.fontWidth(), 
             3
         );
-        _app->display.write(">");
+        app->display.write(">");
 
         return;
     }
@@ -108,23 +102,23 @@ void MenuScreen::render() {
 
         // > MENU ITEM TEXT: VALUE
         if (_selected_item == i) {
-            _app->display.setCursor(0, line);
-            _app->display.write(">");
+            app->display.setCursor(0, line);
+            app->display.write(">");
         }
 
-        _app->display.setCursor(_app->display.fontWidth() * 3, line);
-        _app->display.print(_items[i]->getText().c_str());
+        app->display.setCursor(app->display.fontWidth() * 3, line);
+        app->display.print(_items[i]->getText().c_str());
 
         // Is there a value?
         if (-1 != _items[i]->getValueIndex()) {
             // Update it
             uint32_t value = 0;
-            _app->storage.read((uint8_t)_items[i]->getValueIndex(), value); // Ignoring return value
+            app->storage.read((uint8_t)_items[i]->getValueIndex(), value); // Ignoring return value
             _items[i]->setValue(value);
 
             // And print it
-            _app->display.print(": ");
-            _app->display.print(_items[i]->getValue());
+            app->display.print(": ");
+            app->display.print(_items[i]->getValue());
         }
 
         line++;
@@ -134,7 +128,9 @@ void MenuScreen::render() {
 
 void MenuScreen::handleEvents() {
     Event ev;
-    while(_app->pollEvent(ev)) {
+
+    App app = App::getInstance();
+    while(app->pollEvent(ev)) {
 
         // Check joystick events
         if (EventType::Joystick == ev.type) {
@@ -155,7 +151,7 @@ void MenuScreen::handleEvents() {
 
                 // Click ends edit mode
                 } else if (EventTypeJoystick::Click == ev.joystick.type) {
-                    if (!_app->storage.update(item->getValueIndex(), item->getValue())) {
+                    if (!app->storage.update(item->getValueIndex(), item->getValue())) {
                         // TODO: Handle error 
                         Serial.println("MenuScreen>handleEvents: Failed to update storage value");
                     }
@@ -181,7 +177,7 @@ void MenuScreen::handleEvents() {
                 // Click enters edit mode or follows the link
                 } else if (EventTypeJoystick::Click == ev.joystick.type) {
                     if (_items[_selected_item]->getScreenId() >= 0) {
-                        _app->switchScreen((MenuScreen::Id)_items[_selected_item]->getScreenId());
+                        app->switchScreen((MenuScreen::Id)_items[_selected_item]->getScreenId());
                         _changed_since_last_render = true;
                     } else if (_items[_selected_item]->getValueIndex() >= 0) {
                         enterEditMode();
