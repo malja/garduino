@@ -42,7 +42,7 @@ const bool DEBUG = true;
 #define LITERS_PER_WATERING_INDEX 1
 #define HUMIDITY_CHECK_INTERVAL_INDEX 2
 #define LITERS_TOTAL_INDEX 3
-#define LAST_HUMIDITY_INDEX 4
+#define LAST_HUMIDITY_INDEX 4   ///< Humidity value of last measurement
 
 ///////////////////////////////////////////////////////////////////////////////
 // DISPLAY
