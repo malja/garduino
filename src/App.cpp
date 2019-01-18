@@ -81,7 +81,7 @@ bool App::setup() {
     display.clear();
     
     // Attach interruption for water meter pulse counting
-    //attachInterrupt(digitalPinToInterrupt(INTERRUPTIONS_PIN_WATER_METER), onWaterMeterPulse, FALLING);
+    attachInterrupt(digitalPinToInterrupt(INTERRUPTIONS_PIN_WATER_METER), onWaterMeterPulse, FALLING);
     return true;
 }
 
@@ -208,6 +208,14 @@ void App::handleJoystickEvents(unsigned long long ms) {
         ev->joystick.direction = direction;
         ev->joystick.x_axis = _joystick.getX();
         ev->joystick.y_axis = _joystick.getY();
+    }
+}
+
+void App::handleSystemEvents() {
+    for(uint8_t i = 0; i < EVENTS_POOL_SIZE; i++) {
+        if (EventType::WateringPulse == _events[i].type) {
+            _stats.pulse();
+        }
     }
 }
 

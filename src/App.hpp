@@ -2,20 +2,32 @@
 #define APP_HPP
 
 #include "config.hpp"
-#include "./Subsystems/Storage.hpp"
+#include "./Subsystems/Storage/Storage.hpp"
 #include "Subsystems/Joystick/Joystick.hpp"
 #include "Subsystems/Display/SSD1306AsciiAvrI2c.h"
 #include "Menu/MenuScreen.hpp"
 #include "interruptions.hpp"
 #include "Events/Event.hpp"
+#include "Subsystems/WateringStats/WateringStats.hpp"
+#include "Helpers/blink.hpp"
 
 #include <Arduino.h>
 
 class App {
 
     public:
-        App();
-        ~App();
+
+        /**
+         * Get singleton instance of App.
+         */
+        static App &getInstance() {
+            static App instance;
+            return instance;
+        }
+
+        // App is singleton, no need for those :)
+        App(App const &other) = delete;
+        void operator=(App const &other) = delete;
 
         /**
          * This method should be called in Arduino's `setup` function to
@@ -85,6 +97,8 @@ class App {
          */
         void handleJoystickEvents(unsigned long long ms);
 
+        void handleSystemEvents();
+
         /**
          * Find event in _events array, which is not yet used and return it. Alternativelly remove the oldest event
 		 * and return it.
@@ -101,6 +115,11 @@ class App {
                                 ///< -1 means there is no current screen set.
 
         Joystick _joystick;
+        WateringStats _stats;
+
+    private:
+        App();
+        ~App();
 };
 
 #endif
