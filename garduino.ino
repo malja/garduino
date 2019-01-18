@@ -1,20 +1,6 @@
 #include "src/App.hpp"
 
-App garduino;
-
-void blink() {
-
-    pinMode(LED_BUILTIN, OUTPUT);
-    time_ms ms = millis();
-
-
-    while(true) {
-        if (millis() - ms > 1000) {
-            digitalWrite(LED_BUILTIN, 1 ^ digitalRead(LED_BUILTIN));
-            ms = millis();
-        }
-    }
-}
+App garduino = App::getInstance();
 
 void setup() {
     Serial.begin(9600);
