@@ -1,1 +1,3 @@
-- Připravit ovládání klapky a čtení průtokoměru
+Je nutné otestovat a zprovoznit spuštění zálivky. Před umožněním probuzení garduina
+ze spánku stiskem tlačítka je nutné vytvořit de-bouncing okruh. V opačném případě
+se přerušení vyvolá vícekrát a dělá to bordel.

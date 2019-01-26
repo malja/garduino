@@ -1,16 +1,20 @@
-#include "src/App.hpp"
-
-App garduino = App::getInstance();
+#include "src/App.h"
 
 void setup() {
-    Serial.begin(9600);
+  Serial.begin(9600);
+  
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
+  
+  // Prepare garduino
+  if (!APP.setup()) {
+    Serial.print("App Setup failed");
+  }
 
-    if (!garduino.setup()){
-        blink();
-    }
-
+  Serial.print("Setup done");
 }
 
 void loop() {
-  garduino.run();
+  // Run infinite loop
+  APP.run();
 }

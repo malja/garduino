@@ -1,5 +1,5 @@
-#include "MenuScreen.hpp"
-#include "App.hpp"
+#include "MenuScreen.h"
+#include "../App.h"
 
 MenuScreen::MenuScreen(String title, uint8_t numOfItems, ... ) {
     
@@ -35,32 +35,30 @@ bool MenuScreen::selectItem(uint8_t index) {
     }
 
     _selected_item = index;
+    
     _changed_since_last_render = true;
     return true;
-}
-
-void MenuScreen::onEnter() {
-    _changed_since_last_render = true;
 }
 
 MenuItem *MenuScreen::getSelectedItem() {
     return _items[_selected_item];
 }
 
-void MenuScreen::update(time_ms ms) {
+void MenuScreen::update(bool renderOverride) {
     handleEvents();
-    render();
+    render(renderOverride);
 }
 
-void MenuScreen::render() {
+void MenuScreen::render(bool renderOverride) {
 
-    if (!_changed_since_last_render) {
+    if (false == _changed_since_last_render && false == renderOverride) {
         return;
     }
 
-    App app = App::getInstance();
+    Display display = APP.display;
     
-    app->display.clear();
+    display.clear();
+    
     _changed_since_last_render = false;
 
     if (_edit_mode) {
@@ -74,21 +72,21 @@ void MenuScreen::render() {
         // |                  |
         // | < VALUE        > |
 
-        app->display.clear();
-        app->display.set2X();
-        app->display.write( _items[_selected_item]->getText().c_str() );
+        display.clear();
+        display.set2X();
+        display.write( _items[_selected_item]->getText().c_str() );
         
-        app->display.set1X();
-        app->display.setCursor(0, 3);
-        app->display.write("< ");
+        display.set1X();
+        display.setCursor(0, 3);
+        display.write("< ");
 
-        app->display.print( _items[_selected_item]->getValue() );
+        display.print( _items[_selected_item]->getValue() );
         
-        app->display.setCursor(
-            app->display.displayWidth() - app->display.fontWidth(), 
+        display.setCursor(
+            display.displayWidth() - display.fontWidth(), 
             3
         );
-        app->display.write(">");
+        display.write(">");
 
         return;
     }
@@ -102,23 +100,23 @@ void MenuScreen::render() {
 
         // > MENU ITEM TEXT: VALUE
         if (_selected_item == i) {
-            app->display.setCursor(0, line);
-            app->display.write(">");
+            display.setCursor(0, line);
+            display.write(">");
         }
 
-        app->display.setCursor(app->display.fontWidth() * 3, line);
-        app->display.print(_items[i]->getText().c_str());
+        display.setCursor(display.fontWidth() * 3, line);
+        display.print(_items[i]->getText().c_str());
 
         // Is there a value?
         if (-1 != _items[i]->getValueIndex()) {
             // Update it
             uint32_t value = 0;
-            app->storage.read((uint8_t)_items[i]->getValueIndex(), value); // Ignoring return value
+            APP.storage.read((uint8_t)_items[i]->getValueIndex(), value); // Ignoring return value
             _items[i]->setValue(value);
 
             // And print it
-            app->display.print(": ");
-            app->display.print(_items[i]->getValue());
+            display.print(": ");
+            display.print(_items[i]->getValue());
         }
 
         line++;
@@ -127,62 +125,52 @@ void MenuScreen::render() {
 }
 
 void MenuScreen::handleEvents() {
-    Event ev;
+    
+    Joystick::MoveDirection direction = APP.joystick.getDirection();
+    bool is_clicked = APP.joystick.isClicked();
 
-    App app = App::getInstance();
-    while(app->pollEvent(ev)) {
+    // If in edit mode
+    if (_edit_mode) { 
+        MenuItem *item = getSelectedItem();
 
-        // Check joystick events
-        if (EventType::Joystick == ev.type) {
-            
-            // If in edit mode
-            if (_edit_mode) { 
+        // TODO: Change in/decrement factor
 
-                MenuItem *item = (MenuItem*)_items[_selected_item];
+        // Change value
+        if (Joystick::MoveDirection::Left == direction) {    
+            item->setValue(item->getValue() - 1);
+            _changed_since_last_render = true;
+        } else if (Joystick::MoveDirection::Right == direction) {
+            item->setValue(item->getValue() + 1);
+            _changed_since_last_render = true;
+        }
 
-                // Direction changes will increment or decrement the value   
-                if (EventTypeJoystick::Direction == ev.joystick.type) {
+        // Click ends edit mode
+        if (is_clicked) {
+            if (!APP.storage.update(item->getValueIndex(), item->getValue())) {
+                APP.switchToErrorMode(App::ErrorCodeID::StorageWriteFailed);
+            }
 
-                    if (EventJoystickMoveDirection::Left == ev.joystick.direction) {    
-                        item->setValue(item->getValue() - 1);
-                    } else if (EventJoystickMoveDirection::Right == ev.joystick.direction) {
-                        item->setValue(item->getValue() + 1);
-                    }
+            _edit_mode = false;
+            _changed_since_last_render = true;
+        }
 
-                // Click ends edit mode
-                } else if (EventTypeJoystick::Click == ev.joystick.type) {
-                    if (!app->storage.update(item->getValueIndex(), item->getValue())) {
-                        // TODO: Handle error 
-                        Serial.println("MenuScreen>handleEvents: Failed to update storage value");
-                    }
-                    _edit_mode = false;
-                }
+    // In standard (non-edit) mode
+    } else {
 
-                _changed_since_last_render = true;
+        // Direction changes scroll down/up the list
+        if (Joystick::MoveDirection::Up == direction) {    
+            _selected_item = (_selected_item - 1) < 0 ? (_num_of_items - 1) : (_selected_item - 1);
+            _changed_since_last_render = true;
+        } else if (Joystick::MoveDirection::Down == direction) {
+            _selected_item = (_selected_item + 1) == _num_of_items ? 0 : (_selected_item + 1);
+            _changed_since_last_render = true;
+        }
 
-            // In standard (non-edit) mode
-            } else {
-
-                // Direction changes scroll down/up the list
-                if (EventTypeJoystick::Direction == ev.joystick.type) {
-
-                    if (EventJoystickMoveDirection::Up == ev.joystick.direction) {    
-                        _selected_item = (_selected_item - 1) < 0 ? (_num_of_items - 1) : (_selected_item - 1);
-                        _changed_since_last_render = true;
-                    } else if (EventJoystickMoveDirection::Down == ev.joystick.direction) {
-                        _selected_item = (_selected_item + 1) == _num_of_items ? 0 : (_selected_item + 1);
-                        _changed_since_last_render = true;
-                    }
-
-                // Click enters edit mode or follows the link
-                } else if (EventTypeJoystick::Click == ev.joystick.type) {
-                    if (_items[_selected_item]->getScreenId() >= 0) {
-                        app->switchScreen((MenuScreen::Id)_items[_selected_item]->getScreenId());
-                        _changed_since_last_render = true;
-                    } else if (_items[_selected_item]->getValueIndex() >= 0) {
-                        enterEditMode();
-                    }
-                }
+        // Click enters edit mode or follows the link
+        if (is_clicked) {
+            // There is no link to follow, just enter edit mode
+            if (!getSelectedItem()->followLink()) {
+                enterEditMode();
             }
         }
     }
