@@ -10,7 +10,7 @@ void TaskSleepMode() {
 
     if (App::StateID::EnterSleepMode == APP.getState()) {
         // Make sure we can wake up by user triggering 
-        AttachWakeUpInterruptions();
+        AttachWakeUpInterrupt();
         Serial.println("Interruptions set");
         delay(100);
 

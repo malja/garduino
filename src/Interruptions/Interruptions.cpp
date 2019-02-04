@@ -14,7 +14,7 @@ ISR(WDT_vect) {
     // This interruption was expected, since garduino was in sleep mode and was waked up by
     // watchdog.
     if (APP.getState() == App::StateID::Sleeping) {
-        OnTimedWakeUpInterruption();
+        OnTimedWakeUpInterrupt();
         wdt_reset();
 
     // Unexpected interruption, need to restart
@@ -28,21 +28,21 @@ ISR(WDT_vect) {
     }
 }
 
-void OnManualWakeUpInterruption() {
-    DetachWakeUpInterruptions();
+void OnManualWakeUpInterrupt() {
+    DetachWakeUpInterrupt();
 
     APP.setState(App::StateID::WakedUpByUser);
     APP.setNextTask(TaskWakeUp);
 }
 
-void OnTimedWakeUpInterruption() {
+void OnTimedWakeUpInterrupt() {
     // This method is called from ISR, interrupts are already disabled
 
     uint32_t elapsed_seconds = APP.getRegister(App::RegisterID::First);
     
     // Is it time to wake up?
     if (SLEEP_NUMBER_OF_SECONDS <= elapsed_seconds) {
-        DetachWakeUpInterruptions();
+        DetachWakeUpInterrupt();
 
         APP.setState(App::StateID::WakedUpByTimer);
         APP.setNextTask(TaskWakeUp);
@@ -56,7 +56,7 @@ void OnTimedWakeUpInterruption() {
     digitalWrite(LED_BUILTIN, 1 ^ digitalRead(LED_BUILTIN));
 }
 
-void AttachWakeUpInterruptions() {
+void AttachWakeUpInterrupt() {
 
     // TODO: Remove comments, when de-bouncing is implemented
     // Register manual wake up pin interruption
@@ -76,9 +76,25 @@ void AttachWakeUpInterruptions() {
     WDTCSR |= _BV(WDIE);
 }
 
-void DetachWakeUpInterruptions() {
+void DetachWakeUpInterrupt() {
     // TODO: Remove comments, when de-bouncing is implemented
     //detachInterrupt(digitalPinToInterrupt(INTERRUPTION_PIN_MANUAL_WAKEUP));
 
     wdt_disable();
+}
+
+void OnFlowmeterInterrupt() {
+    // Increase pulse counter. There should be TaskRunWatering listening to it.
+    uint32_t value = APP.getRegister(App::RegisterID::First);
+    APP.setRegister(App::RegisterID::First, value + 1);
+}
+
+void AttachFlowmeterInterrupt() {
+    pinMode(INTERRUPT_PIN_FLOWMETER, INPUT);
+
+    attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN_FLOWMETER), OnFlowmeterInterrupt, FALLING);
+}
+
+void DetachFlowmeterInterrupt() {
+    detachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN_FLOWMETER));
 }

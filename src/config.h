@@ -74,9 +74,9 @@ const bool DEBUG = true;
 // INTERRUPTIONS
 ///////////////////////////////////////////////////////////////////////////////
 
-/// Pin connected to water meter. When watering is running, this pin is used
+/// Pin connected to flowmeter. When watering is running, this pin is used
 /// to count number of liters used.
-#define INTERRUPTION_PIN_WATER_METER 2
+#define INTERRUPT_PIN_FLOWMETER 2
 
 /// This pin is connected to control joystick used for manual wake up.
 #define INTERRUPTION_PIN_MANUAL_WAKEUP JOYSTICK_PIN_BUTTON
@@ -101,5 +101,8 @@ const bool DEBUG = true;
 
 // TODO: Change pin to something real :)
 #define HUMIDITY_PIN_READ 5
+
+/// Number of pulses generated per one liter by flowmeter.
+#define FLOWMETER_PULSES_PER_LITER 450
 
 #endif 
