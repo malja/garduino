@@ -13,7 +13,7 @@ class MenuItem {
 
         /**
          * Create new MenuItem. 
-         * @param text Text description which should be shown. Maximum 15 characters.
+         * @param text Text description which should be shown.
          * @param valueIndex Variable index inside Storage. Use -1 for no value. 
          * @param click_callback Pointer to function which should be executed when menu item is clicked.
          * Set it to nullptr if second value is not negative and you only want edit the value in memory.
