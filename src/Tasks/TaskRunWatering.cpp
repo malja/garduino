@@ -32,21 +32,22 @@ void TaskRunWatering() {
     }
 
     // Preserve only one decimal number
-    float liters_used = round(((float)APP.getRegister(App::RegisterID::First) / FLOWMETER_PULSES_PER_LITER) * 10) / 10;
+    uint32_t liters_used = round(APP.getRegister(App::RegisterID::First) / FLOWMETER_PULSES_PER_LITER);
     uint32_t max_liters_per_watering = 0;
     APP.storage.read(LITERS_PER_WATERING_INDEX, max_liters_per_watering);
 
     // Update liters usage only when last value is different from the current one.
     if (App::StateID::WateringManual == state &&
-        APP.getRegister(App::RegisterID::Third)/10 < liters_used) {
-            APP.display.clear();
-            APP.display.print("Watering in progress...");
-            APP.display.write(liters_used);
-            APP.display.write("/");
-            APP.display.print(max_liters_per_watering);
+        APP.getRegister(App::RegisterID::Third) != liters_used) {
 
-            // Preserve one decimal place
-            APP.setRegister(App::RegisterID::Third, round(liters_used * 10));
+            APP.display.clear();
+            APP.display.println("Watering in progress...");
+            APP.display.print(liters_used);
+            APP.display.print("/");
+            APP.display.println(max_liters_per_watering);
+
+            // Update value
+            APP.setRegister(App::RegisterID::Third, liters_used);
     }
 
     // Watering threshold reached
@@ -57,13 +58,12 @@ void TaskRunWatering() {
 
         // We should go to sleep
         if (App::StateID::WateringAutomatic == state) {
+            APP.display.ssd1306WriteCmd(SSD1306_DISPLAYOFF);
             APP.setState(App::StateID::EnterSleepMode);
             APP.setNextTask(TaskSleepMode);
         
         // Or return to main menu
         } else {
-            APP.display.ssd1306WriteCmd(SSD1306_DISPLAYOFF);
-
             APP.setState(App::StateID::MenuMain);
             APP.setNextTask(TaskShowMenu);
         }

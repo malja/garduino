@@ -68,6 +68,9 @@ const bool DEBUG = true;
 ///////////////////////////////////////////////////////////////////////////////
 
 /// Number of app screens. Value is used for generating list of all app screens.
+/// 1 - Main menu
+/// 2 - Settings
+/// 3 - Statistics
 #define APP_SCREENS_COUNT 3
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -89,6 +92,28 @@ const bool DEBUG = true;
 #define SLEEP_SECONDS_PER_INTERRUPTION 8
 
 ///////////////////////////////////////////////////////////////////////////////
+// SOIL HUMIDITY SENSOR
+///////////////////////////////////////////////////////////////////////////////
+
+/// Number of pin which should be enabled to start reading from soil humidity
+/// sensor.
+#define SOIL_HUMIDITY_SENSOR_POWER_PIN 12
+
+/// Pin number used for reading actual data from soil humidity sensor. 
+/// Note: It has to be enabled with setting SOIL_HUMIDITY_SENDOR_POWER_PIN 
+/// in output mode.
+#define SOIL_HUMIDITY_SENSOR_READING_PIN A2
+
+///////////////////////////////////////////////////////////////////////////////
+// FLOWMETER SENSOR
+///////////////////////////////////////////////////////////////////////////////
+
+// See INTERRUPT_PIN_FLOWMETER
+
+/// Number of pulses generated per one liter by flowmeter.
+#define FLOWMETER_PULSES_PER_LITER 450
+
+///////////////////////////////////////////////////////////////////////////////
 // RUNTIME
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -98,11 +123,5 @@ const bool DEBUG = true;
 #define DEFAULT_HUMIDITY_CHECK_INTERVAL 30
 #define DEFAULT_LITERS_TOTAL 0
 #define DEFAULT_LAST_HUMIDITY 0
-
-// TODO: Change pin to something real :)
-#define HUMIDITY_PIN_READ 5
-
-/// Number of pulses generated per one liter by flowmeter.
-#define FLOWMETER_PULSES_PER_LITER 450
 
 #endif 
