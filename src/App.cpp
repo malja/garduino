@@ -18,14 +18,12 @@ bool App::setup() {
 
     // Connect to EEPROM
     if (!storage.setup(STORAGE_OFFSET_IN_BYTES, STORAGE_SIZE_IN_BYTES)) {
-        Serial.print("Setup failed!");
-        //switchToErrorMode(App::ErrorCodeID::StorageSetupFailed);
+        switchToErrorMode(App::ErrorCodeID::StorageSetupFailed);
         return false;
     }
 
     // If there are no data, write defaults
     if (storage.isEmpty()) {
-        Serial.print("Storage is empty");
         if (
             !storage.write(HUMIDITY_THRESHOLD_INDEX, DEFAULT_HUMIDITY_THRESHOLD) ||
             !storage.write(LITERS_PER_WATERING_INDEX, DEFAULT_LITERS_PER_WATERING) ||
@@ -33,8 +31,7 @@ bool App::setup() {
             !storage.write(LITERS_TOTAL_INDEX, DEFAULT_LITERS_TOTAL) ||
             !storage.write(LAST_HUMIDITY_INDEX, DEFAULT_LAST_HUMIDITY)
         ){
-            Serial.print("Unable to save defaults");
-            //switchToErrorMode(App::ErrorCodeID::StorageSetDefaultsFailed);
+            switchToErrorMode(App::ErrorCodeID::StorageSetDefaultsFailed);
             return false;
         }
     }
@@ -42,7 +39,7 @@ bool App::setup() {
     // Main menu
     screens[MenuScreenID::Main] = new MenuScreen(
         "Welcome",  // Title
-        3,          // number of items
+        4,          // number of items
 
         // Item number 1
         new MenuItem("Settings", -1, []() {
@@ -57,7 +54,13 @@ bool App::setup() {
         }),
 
         // Item number 3
-        new MenuItem("Turn off", -1, []() {
+        new MenuItem("Run Watering", -1, [](){
+            APP.setState(App::StateID::HumidityCheck);
+            APP.setNextTask(TaskCheckHumidity);
+        }),
+
+        // Item number 4
+        new MenuItem("Go to sleep", -1, []() {
             APP.setState(App::StateID::EnterSleepMode);
             APP.setNextTask(TaskSleepMode);
         })
@@ -68,9 +71,9 @@ bool App::setup() {
         "Settings", // Title
         4,          // Number of items
 
-        new MenuItem("Hum. thrsld", HUMIDITY_THRESHOLD_INDEX, nullptr),
-        new MenuItem("l/watering", LITERS_PER_WATERING_INDEX, nullptr),
-        new MenuItem("Chck interval", HUMIDITY_CHECK_INTERVAL_INDEX, nullptr),
+        new MenuItem("Hum. threshold", HUMIDITY_THRESHOLD_INDEX, nullptr),
+        new MenuItem("liters/watering", LITERS_PER_WATERING_INDEX, nullptr),
+        new MenuItem("Check interval", HUMIDITY_CHECK_INTERVAL_INDEX, nullptr),
         new MenuItem("Back", -1, []() {
             APP.setState(App::StateID::MenuMain);
             // next task is ShowMenu
@@ -83,7 +86,7 @@ bool App::setup() {
         3,              // Number of items
 
         new MenuItem("Total liters", LITERS_TOTAL_INDEX, nullptr),
-        new MenuItem("Cur. humidity", LAST_HUMIDITY_INDEX, nullptr),
+        new MenuItem("Last humidity", LAST_HUMIDITY_INDEX, nullptr),
         new MenuItem("Back", -1, []() {
             APP.setState(App::StateID::MenuMain);
             // Next task is ShowMenu
