@@ -29,6 +29,6 @@ void TaskSleepMode() {
 
     // Transition to next task and app state is done automatically in 
     // interruption handler.
-    // See OnTimedWakeUpInterruption and OnManualWakeUpInterruption
+    // See OnTimedWakeUpInterruption and OnManualWakeUpInterrupt
     // functions for further documentation.
 }
