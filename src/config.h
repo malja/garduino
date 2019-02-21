@@ -97,7 +97,7 @@ const bool DEBUG = true;
 
 /// Number of pin which should be enabled to start reading from soil humidity
 /// sensor.
-#define SOIL_HUMIDITY_SENSOR_POWER_PIN 12
+#define SOIL_HUMIDITY_SENSOR_POWER_PIN 11
 
 /// Pin number used for reading actual data from soil humidity sensor. 
 /// Note: It has to be enabled with setting SOIL_HUMIDITY_SENDOR_POWER_PIN 
@@ -117,11 +117,16 @@ const bool DEBUG = true;
 // RUNTIME
 ///////////////////////////////////////////////////////////////////////////////
 
-/// Default values for all variables stored in EEPROM.
-#define DEFAULT_HUMIDITY_THRESHOLD 120
+/// All humidity readings up to this threshold are considered measured in dry
+/// soil.
+#define DEFAULT_HUMIDITY_THRESHOLD 500
+/// Number of liters used per one watering
 #define DEFAULT_LITERS_PER_WATERING 5
+/// Number of minutes between each humidity check
 #define DEFAULT_HUMIDITY_CHECK_INTERVAL 30
+/// Default value for total number of liters. 
 #define DEFAULT_LITERS_TOTAL 0
+/// Default value for last humidity reading
 #define DEFAULT_LAST_HUMIDITY 0
 
 #endif 

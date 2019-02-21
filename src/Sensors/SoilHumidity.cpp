@@ -13,7 +13,9 @@ bool IsSoilHumid() {
         APP.switchToErrorMode(App::ErrorCodeID::StorageReadFailed);
     }
 
-    uint16_t current_humidity = analogRead(SOIL_HUMIDITY_SENSOR_READING_PIN);
+    // For dry soil, value is something around 20
+    // For sensor fully submerged into water, values are around 700
+    uint16_t current_humidity = 1023 - analogRead(SOIL_HUMIDITY_SENSOR_READING_PIN);
     
     // Save last readings to memory
     if (!APP.storage.write(LAST_HUMIDITY_INDEX, current_humidity)) {
