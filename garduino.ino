@@ -1,8 +1,6 @@
 #include "src/App.h"
 
-void setup() {
-  Serial.begin(9600);
-  
+void setup() {  
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
   

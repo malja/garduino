@@ -16,6 +16,10 @@ App::App() {
 
 bool App::setup() {
 
+    if (DEBUG) {
+        Serial.begin(9600);
+    }
+
     // Connect to EEPROM
     if (!storage.setup(STORAGE_OFFSET_IN_BYTES, STORAGE_SIZE_IN_BYTES)) {
         switchToErrorMode(App::ErrorCodeID::StorageSetupFailed);
