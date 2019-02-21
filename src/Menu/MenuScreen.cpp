@@ -22,11 +22,13 @@ MenuScreen::MenuScreen(String title, uint8_t numOfItems, ... ) {
     _selected_item = 0;
     _edit_mode = false;
     _changed_since_last_render = true;
+    _multiplier = 0;
 }
 
 void MenuScreen::enterEditMode() {
     _edit_mode = true;
     _changed_since_last_render = true;
+    _multiplier = 0;
 }
 
 bool MenuScreen::selectItem(uint8_t index) {
@@ -68,25 +70,29 @@ void MenuScreen::render(bool renderOverride) {
             return;
         }
 
-        // | MENU ITEM TEXT   |
-        // |                  |
-        // | < VALUE        > |
+        // | MENU ITEM TEXT |
+        // |                |
+        // |          Value |
+        // |              ^ |
 
         display.clear();
-        display.set2X();
+
+        // Value name
         display.write( _items[_selected_item]->getText().c_str() );
         
-        display.set1X();
-        display.setCursor(0, 3);
-        display.write("< ");
-
-        display.print( _items[_selected_item]->getValue() );
-        
+        // Value itself, aligned to the right
+        display.setCursor(0, 2);
+        display.write("=>");
         display.setCursor(
-            display.displayWidth() - display.fontWidth(), 
-            3
+            // Number of pixels      Pixels per character   Number of characters in value                   
+            display.displayWidth() - display.fontWidth() * (_items[_selected_item]->getValueLengthInChars() + 1),
+            2
         );
-        display.write(">");
+        display.print(_items[_selected_item]->getValue());
+
+        // Multiplier
+        display.setCursor( display.displayWidth() - display.fontWidth() * (_multiplier + 2) , 3);
+        display.write("^");
 
         return;
     }
@@ -133,15 +139,34 @@ void MenuScreen::handleEvents() {
     if (_edit_mode) { 
         MenuItem *item = getSelectedItem();
 
-        // TODO: Change in/decrement factor
+        switch(direction) {
+            case Joystick::MoveDirection::Down: {
+                item->decrementValue(_multiplier);
+                _changed_since_last_render = true;
+                break;
+            }
 
-        // Change value
-        if (Joystick::MoveDirection::Left == direction) {    
-            item->setValue(item->getValue() - 1);
-            _changed_since_last_render = true;
-        } else if (Joystick::MoveDirection::Right == direction) {
-            item->setValue(item->getValue() + 1);
-            _changed_since_last_render = true;
+            case Joystick::MoveDirection::Up: {
+                item->incrementValue(_multiplier);
+                _changed_since_last_render = true;
+                break;
+            }
+
+            case Joystick::MoveDirection::Left: {
+                if (_multiplier < 3) {
+                    _multiplier += 1;
+                    _changed_since_last_render = true;
+                }
+                break;
+            }
+
+            case Joystick::MoveDirection::Right: {
+                if (_multiplier > 0) {
+                    _multiplier -= 1;
+                    _changed_since_last_render = true;
+                }
+                break;
+            }
         }
 
         // Click ends edit mode

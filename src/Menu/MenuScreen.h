@@ -26,6 +26,7 @@ class MenuScreen {
 
         String _title;
 
+        uint8_t _multiplier;        ///< Value multiplier in edit mode
         MenuItem **_items;           ///< List of all MenuItems for this screen.
         uint8_t _num_of_items;      ///< Number of elements in _items array
         uint8_t _max_num_of_items;  ///< Maximum number of elements in _items array

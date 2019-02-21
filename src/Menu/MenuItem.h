@@ -33,9 +33,34 @@ class MenuItem {
         }
 
         /**
+         * Return number of characters in numerical value.
+         * 
+         * Example: 
+         * - value 124 => 3
+         * - value 68767 => 5
+         * - value 0 => 1
+        */
+        uint8_t getValueLengthInChars() const;
+
+        /**
          * If callback is defined, it is executed and true is returned. In other cases, false is returned.
         */
         bool followLink();
+
+        void incrementValue(uint8_t multiplier) {
+            // Without round(), value could be decreased by one due to some weird rounding
+            _value += round(pow(10, multiplier));
+        }
+
+        void decrementValue(uint8_t multiplier) {
+            // Without round(), value could be decreased by one due to some weird rounding
+            uint32_t decrement = round(pow(10, multiplier));
+            if (_value < decrement) {
+                _value = 0;
+            } else {
+                _value -= decrement;
+            }
+        }
 
         void setValue(uint32_t value) {
             _value = value;

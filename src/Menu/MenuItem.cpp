@@ -16,3 +16,14 @@ bool MenuItem::followLink() {
     _callback();
     return true;
 }
+
+uint8_t MenuItem::getValueLengthInChars() const  {
+    uint8_t length = 1;
+    uint32_t value = _value;
+    while(value > 9) {
+        length++;
+        value /= 10;
+    }
+    
+    return length;
+}
