@@ -1,3 +1,3 @@
-Je nutné otestovat a zprovoznit spuštění zálivky. Před umožněním probuzení garduina
-ze spánku stiskem tlačítka je nutné vytvořit de-bouncing okruh. V opačném případě
-se přerušení vyvolá vícekrát a dělá to bordel.
+1) Napsat kód a vyzkoušet otevírání a zavírání ventilu.
+2) Vyzkoušet novou funkci na kalibraci senzoru vlhkosti půdy.
+3) Přejmenovat humidity na moisture.
