@@ -29,6 +29,8 @@ class Joystick : public PSJoystick {
 
     protected:
 
+        using PSJoystick::isPressed;
+
         unsigned long long _last_direction_reported;
         unsigned long long _last_click_reported;
 
