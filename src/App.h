@@ -35,7 +35,8 @@ class App {
             StorageReadFailed,
             StorageSetupFailed,
             StorageWriteFailed,
-            StorageSetDefaultsFailed
+            StorageSetDefaultsFailed,
+            UnknownState,
         } ErrorCodeID;
 
         /**
@@ -77,6 +78,11 @@ class App {
             
             /// Currently in sleep mode.
             Sleeping,
+
+            /// 
+            CalibrateHumidityLow,
+            CalibrateHumidityHigh,
+            CalibrateHumidityFinish,
 
             /// Something bad happened in app
             Error
