@@ -16,4 +16,9 @@
 */
 bool IsSoilHumid();
 
+/**
+ * Returns one reading from soil humidity sensor.
+*/
+uint16_t GetSoilHumidity();
+
 #endif

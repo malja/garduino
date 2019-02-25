@@ -3,8 +3,6 @@
 #include "../config.h"
 
 bool IsSoilHumid() {
-    // enable soil humidity sensor 
-    pinMode(SOIL_HUMIDITY_SENSOR_POWER_PIN, OUTPUT);
 
     uint32_t humidity_threshold = 0;
     
@@ -13,18 +11,26 @@ bool IsSoilHumid() {
         APP.switchToErrorMode(App::ErrorCodeID::StorageReadFailed);
     }
 
-    // For dry soil, value is something around 20
-    // For sensor fully submerged into water, values are around 700
-    uint16_t current_humidity = 1023 - analogRead(SOIL_HUMIDITY_SENSOR_READING_PIN);
+    uint16_t current_humidity = GetSoildHumidity();
     
     // Save last readings to memory
-    if (!APP.storage.write(LAST_HUMIDITY_INDEX, current_humidity)) {
+    if (!APP.storage.update(LAST_HUMIDITY_INDEX, current_humidity)) {
         // Enter error mode to inform reading failed!
         APP.switchToErrorMode(App::ErrorCodeID::StorageWriteFailed);
     }
 
-    // disable soil humidity sensor
-    pinMode(SOIL_HUMIDITY_SENSOR_POWER_PIN, INPUT);
-
     return current_humidity >= humidity_threshold;
 }
+
+uint16_t GetSoildHumidity() {
+    // enable soild humidity sensor
+    pinMode(SOIL_HUMIDITY_SENSOR_POWER_PIN, OUTPUT);
+
+    // For dry soil, value is something around 20
+    // For sensor fully submerged into water, values are around 700
+    uint16_t current_humidity = 1023 - analogRead(SOIL_HUMIDITY_SENSOR_READING_PIN);
+
+    // disable soil humidity sensor
+    pinMode(SOIL_HUMIDITY_SENSOR_POWER_PIN, INPUT);
+}
+
