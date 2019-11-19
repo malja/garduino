@@ -1,0 +1,494 @@
+<svg id="mermaid-1574157818770" width="1882.125" xmlns="http://www.w3.org/2000/svg" height="2200.800048828125" viewBox="0 0 1882.125 2200.800048828125"><style>
+
+
+
+#mermaid-1574157818770 .label {
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family);
+  color: #333; }
+
+#mermaid-1574157818770 .label text {
+  fill: #333; }
+
+#mermaid-1574157818770 .node rect,
+#mermaid-1574157818770 .node circle,
+#mermaid-1574157818770 .node ellipse,
+#mermaid-1574157818770 .node polygon {
+  fill: #ECECFF;
+  stroke: #9370DB;
+  stroke-width: 1px; }
+
+#mermaid-1574157818770 .node .label {
+  text-align: center; }
+
+#mermaid-1574157818770 .node.clickable {
+  cursor: pointer; }
+
+#mermaid-1574157818770 .arrowheadPath {
+  fill: #333333; }
+
+#mermaid-1574157818770 .edgePath .path {
+  stroke: #333333;
+  stroke-width: 1.5px; }
+
+#mermaid-1574157818770 .edgeLabel {
+  background-color: #e8e8e8;
+  text-align: center; }
+
+#mermaid-1574157818770 .cluster rect {
+  fill: #ffffde;
+  stroke: #aaaa33;
+  stroke-width: 1px; }
+
+#mermaid-1574157818770 .cluster text {
+  fill: #333; }
+
+#mermaid-1574157818770 div.mermaidTooltip {
+  position: absolute;
+  text-align: center;
+  max-width: 200px;
+  padding: 2px;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family);
+  font-size: 12px;
+  background: #ffffde;
+  border: 1px solid #aaaa33;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 100; }
+
+#mermaid-1574157818770 .actor {
+  stroke: #CCCCFF;
+  fill: #ECECFF; }
+
+#mermaid-1574157818770 text.actor {
+  fill: black;
+  stroke: none; }
+
+#mermaid-1574157818770 .actor-line {
+  stroke: grey; }
+
+#mermaid-1574157818770 .messageLine0 {
+  stroke-width: 1.5;
+  stroke-dasharray: '2 2';
+  stroke: #333; }
+
+#mermaid-1574157818770 .messageLine1 {
+  stroke-width: 1.5;
+  stroke-dasharray: '2 2';
+  stroke: #333; }
+
+#mermaid-1574157818770 #arrowhead {
+  fill: #333; }
+
+#mermaid-1574157818770 .sequenceNumber {
+  fill: white; }
+
+#mermaid-1574157818770 #sequencenumber {
+  fill: #333; }
+
+#mermaid-1574157818770 #crosshead path {
+  fill: #333 !important;
+  stroke: #333 !important; }
+
+#mermaid-1574157818770 .messageText {
+  fill: #333;
+  stroke: none; }
+
+#mermaid-1574157818770 .labelBox {
+  stroke: #CCCCFF;
+  fill: #ECECFF; }
+
+#mermaid-1574157818770 .labelText {
+  fill: black;
+  stroke: none; }
+
+#mermaid-1574157818770 .loopText {
+  fill: black;
+  stroke: none; }
+
+#mermaid-1574157818770 .loopLine {
+  stroke-width: 2;
+  stroke-dasharray: '2 2';
+  stroke: #CCCCFF; }
+
+#mermaid-1574157818770 .note {
+  stroke: #aaaa33;
+  fill: #fff5ad; }
+
+#mermaid-1574157818770 .noteText {
+  fill: black;
+  stroke: none;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family);
+  font-size: 14px; }
+
+#mermaid-1574157818770 .activation0 {
+  fill: #f4f4f4;
+  stroke: #666; }
+
+#mermaid-1574157818770 .activation1 {
+  fill: #f4f4f4;
+  stroke: #666; }
+
+#mermaid-1574157818770 .activation2 {
+  fill: #f4f4f4;
+  stroke: #666; }
+
+
+#mermaid-1574157818770 .mermaid-main-font {
+  font-family: "trebuchet ms", verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574157818770 .section {
+  stroke: none;
+  opacity: 0.2; }
+
+#mermaid-1574157818770 .section0 {
+  fill: rgba(102, 102, 255, 0.49); }
+
+#mermaid-1574157818770 .section2 {
+  fill: #fff400; }
+
+#mermaid-1574157818770 .section1,
+#mermaid-1574157818770 .section3 {
+  fill: white;
+  opacity: 0.2; }
+
+#mermaid-1574157818770 .sectionTitle0 {
+  fill: #333; }
+
+#mermaid-1574157818770 .sectionTitle1 {
+  fill: #333; }
+
+#mermaid-1574157818770 .sectionTitle2 {
+  fill: #333; }
+
+#mermaid-1574157818770 .sectionTitle3 {
+  fill: #333; }
+
+#mermaid-1574157818770 .sectionTitle {
+  text-anchor: start;
+  font-size: 11px;
+  text-height: 14px;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+
+#mermaid-1574157818770 .grid .tick {
+  stroke: lightgrey;
+  opacity: 0.3;
+  shape-rendering: crispEdges; }
+#mermaid-1574157818770   .grid .tick text {
+    font-family: 'trebuchet ms', verdana, arial;
+    font-family: var(--mermaid-font-family); }
+
+#mermaid-1574157818770 .grid path {
+  stroke-width: 0; }
+
+
+#mermaid-1574157818770 .today {
+  fill: none;
+  stroke: red;
+  stroke-width: 2px; }
+
+
+
+#mermaid-1574157818770 .task {
+  stroke-width: 2; }
+
+#mermaid-1574157818770 .taskText {
+  text-anchor: middle;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574157818770 .taskText:not([font-size]) {
+  font-size: 11px; }
+
+#mermaid-1574157818770 .taskTextOutsideRight {
+  fill: black;
+  text-anchor: start;
+  font-size: 11px;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574157818770 .taskTextOutsideLeft {
+  fill: black;
+  text-anchor: end;
+  font-size: 11px; }
+
+
+#mermaid-1574157818770 .task.clickable {
+  cursor: pointer; }
+
+#mermaid-1574157818770 .taskText.clickable {
+  cursor: pointer;
+  fill: #003163 !important;
+  font-weight: bold; }
+
+#mermaid-1574157818770 .taskTextOutsideLeft.clickable {
+  cursor: pointer;
+  fill: #003163 !important;
+  font-weight: bold; }
+
+#mermaid-1574157818770 .taskTextOutsideRight.clickable {
+  cursor: pointer;
+  fill: #003163 !important;
+  font-weight: bold; }
+
+
+#mermaid-1574157818770 .taskText0,
+#mermaid-1574157818770 .taskText1,
+#mermaid-1574157818770 .taskText2,
+#mermaid-1574157818770 .taskText3 {
+  fill: white; }
+
+#mermaid-1574157818770 .task0,
+#mermaid-1574157818770 .task1,
+#mermaid-1574157818770 .task2,
+#mermaid-1574157818770 .task3 {
+  fill: #8a90dd;
+  stroke: #534fbc; }
+
+#mermaid-1574157818770 .taskTextOutside0,
+#mermaid-1574157818770 .taskTextOutside2 {
+  fill: black; }
+
+#mermaid-1574157818770 .taskTextOutside1,
+#mermaid-1574157818770 .taskTextOutside3 {
+  fill: black; }
+
+
+#mermaid-1574157818770 .active0,
+#mermaid-1574157818770 .active1,
+#mermaid-1574157818770 .active2,
+#mermaid-1574157818770 .active3 {
+  fill: #bfc7ff;
+  stroke: #534fbc; }
+
+#mermaid-1574157818770 .activeText0,
+#mermaid-1574157818770 .activeText1,
+#mermaid-1574157818770 .activeText2,
+#mermaid-1574157818770 .activeText3 {
+  fill: black !important; }
+
+
+#mermaid-1574157818770 .done0,
+#mermaid-1574157818770 .done1,
+#mermaid-1574157818770 .done2,
+#mermaid-1574157818770 .done3 {
+  stroke: grey;
+  fill: lightgrey;
+  stroke-width: 2; }
+
+#mermaid-1574157818770 .doneText0,
+#mermaid-1574157818770 .doneText1,
+#mermaid-1574157818770 .doneText2,
+#mermaid-1574157818770 .doneText3 {
+  fill: black !important; }
+
+
+#mermaid-1574157818770 .crit0,
+#mermaid-1574157818770 .crit1,
+#mermaid-1574157818770 .crit2,
+#mermaid-1574157818770 .crit3 {
+  stroke: #ff8888;
+  fill: red;
+  stroke-width: 2; }
+
+#mermaid-1574157818770 .activeCrit0,
+#mermaid-1574157818770 .activeCrit1,
+#mermaid-1574157818770 .activeCrit2,
+#mermaid-1574157818770 .activeCrit3 {
+  stroke: #ff8888;
+  fill: #bfc7ff;
+  stroke-width: 2; }
+
+#mermaid-1574157818770 .doneCrit0,
+#mermaid-1574157818770 .doneCrit1,
+#mermaid-1574157818770 .doneCrit2,
+#mermaid-1574157818770 .doneCrit3 {
+  stroke: #ff8888;
+  fill: lightgrey;
+  stroke-width: 2;
+  cursor: pointer;
+  shape-rendering: crispEdges; }
+
+#mermaid-1574157818770 .milestone {
+  transform: rotate(45deg) scale(0.8, 0.8); }
+
+#mermaid-1574157818770 .milestoneText {
+  font-style: italic; }
+
+#mermaid-1574157818770 .doneCritText0,
+#mermaid-1574157818770 .doneCritText1,
+#mermaid-1574157818770 .doneCritText2,
+#mermaid-1574157818770 .doneCritText3 {
+  fill: black !important; }
+
+#mermaid-1574157818770 .activeCritText0,
+#mermaid-1574157818770 .activeCritText1,
+#mermaid-1574157818770 .activeCritText2,
+#mermaid-1574157818770 .activeCritText3 {
+  fill: black !important; }
+
+#mermaid-1574157818770 .titleText {
+  text-anchor: middle;
+  font-size: 18px;
+  fill: black;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574157818770 g.classGroup text {
+  fill: #9370DB;
+  stroke: none;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family);
+  font-size: 10px; }
+#mermaid-1574157818770   g.classGroup text .title {
+    font-weight: bolder; }
+
+#mermaid-1574157818770 g.classGroup rect {
+  fill: #ECECFF;
+  stroke: #9370DB; }
+
+#mermaid-1574157818770 g.classGroup line {
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574157818770 .classLabel .box {
+  stroke: none;
+  stroke-width: 0;
+  fill: #ECECFF;
+  opacity: 0.5; }
+
+#mermaid-1574157818770 .classLabel .label {
+  fill: #9370DB;
+  font-size: 10px; }
+
+#mermaid-1574157818770 .relation {
+  stroke: #9370DB;
+  stroke-width: 1;
+  fill: none; }
+
+#mermaid-1574157818770 #compositionStart {
+  fill: #9370DB;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574157818770 #compositionEnd {
+  fill: #9370DB;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574157818770 #aggregationStart {
+  fill: #ECECFF;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574157818770 #aggregationEnd {
+  fill: #ECECFF;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574157818770 #dependencyStart {
+  fill: #9370DB;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574157818770 #dependencyEnd {
+  fill: #9370DB;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574157818770 #extensionStart {
+  fill: #9370DB;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574157818770 #extensionEnd {
+  fill: #9370DB;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574157818770 .commit-id,
+#mermaid-1574157818770 .commit-msg,
+#mermaid-1574157818770 .branch-label {
+  fill: lightgrey;
+  color: lightgrey;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574157818770 .pieTitleText {
+  text-anchor: middle;
+  font-size: 25px;
+  fill: black;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574157818770 .slice {
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574157818770 g.stateGroup text {
+  fill: #9370DB;
+  stroke: none;
+  font-size: 10px;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574157818770 g.stateGroup text {
+  fill: #9370DB;
+  stroke: none;
+  font-size: 10px; }
+
+#mermaid-1574157818770 g.stateGroup .state-title {
+  font-weight: bolder;
+  fill: black; }
+
+#mermaid-1574157818770 g.stateGroup rect {
+  fill: #ECECFF;
+  stroke: #9370DB; }
+
+#mermaid-1574157818770 g.stateGroup line {
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574157818770 .transition {
+  stroke: #9370DB;
+  stroke-width: 1;
+  fill: none; }
+
+#mermaid-1574157818770 .stateGroup .composit {
+  fill: white;
+  border-bottom: 1px; }
+
+#mermaid-1574157818770 .state-note {
+  stroke: #aaaa33;
+  fill: #fff5ad; }
+#mermaid-1574157818770   .state-note text {
+    fill: black;
+    stroke: none;
+    font-size: 10px; }
+
+#mermaid-1574157818770 .stateLabel .box {
+  stroke: none;
+  stroke-width: 0;
+  fill: #ECECFF;
+  opacity: 0.5; }
+
+#mermaid-1574157818770 .stateLabel text {
+  fill: black;
+  font-size: 10px;
+  font-weight: bold;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+:root {
+  --mermaid-font-family: '"trebuchet ms", verdana, arial';
+  --mermaid-font-family: "Comic Sans MS", "Comic Sans", cursive; }
+
+:root { --mermaid-font-family: "trebuchet ms", verdana, arial;}</style><style>#mermaid-1574157818770 {
+    color: rgba(0, 0, 0, 0.65);
+    font: ;
+  }</style><g transform="translate(0, 0)"><g class="output"><g class="clusters"></g><g class="edgePaths"><g class="edgePath" style="opacity: 1;"><path class="path" d="M1169.840551656706,47.06553884671123L731,121L731,167" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232605)" style="fill:none"></path><defs><marker id="arrowhead232605" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M686.5,195.09756097560975L464.5,233L465,258.5" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232606)" style="fill:none"></path><defs><marker id="arrowhead232606" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M430.47115384615387,309.47115384615387L91.75,389.5L92.25,436" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232607)" style="stroke: #333; fill:none;stroke-width:2px;stroke-dasharray:3;"></path><defs><marker id="arrowhead232607" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M92.25,477L91.75,501.5L179.0936423156444,553.7813576843556" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232608)" style="fill:none"></path><defs><marker id="arrowhead232608" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M208.8814322469983,530.0064322469983L210.5,501.5L210.5,456L210.5,389.5L210.5,300.75L210.5,233L686.5,191.39000960614794" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232609)" style="fill:none"></path><defs><marker id="arrowhead232609" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M234.52244370054777,555.6474437005478L343,501.5L343,456L343,389.5L343,300.75L343,233L686.5,192.71842783505156" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232610)" style="fill:none"></path><defs><marker id="arrowhead232610" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M245.75776969582466,572.6172303041753L1439.875,658L1439.875,704" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232611)" style="fill:none"></path><defs><marker id="arrowhead232611" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M205.875,612.5L205.375,658L205.375,724.5L205.375,791L205.375,857.5L205.375,903L205.375,981.0999984741211L205.375,1090.6999969482422L205.375,1189.9499969482422L205.375,1278.6999969482422L205.375,1345.1999969482422L205.375,1411.6999969482422L205.375,1500.4499969482422L205.375,1589.1999969482422L1171.75,1652.7725825795023" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232612)" style="fill:none"></path><defs><marker id="arrowhead232612" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M465,344L464.5,389.5L465,436" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232613)" style="stroke: #333; fill:none;stroke-width:2px;stroke-dasharray:3;"></path><defs><marker id="arrowhead232613" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M465,477L464.5,501.5L679.1800713153724,560.5699286846276" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232614)" style="fill:none"></path><defs><marker id="arrowhead232614" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M684.7207750952986,555.0292249047014L583.25,501.5L583.25,456L583.25,389.5L583.25,300.75L583.25,233L686.5,201.20389170896786" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232615)" style="fill:none"></path><defs><marker id="arrowhead232615" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M712.75,527L712.25,501.5L712.25,456L712.25,389.5L712.25,300.75L712.25,233L722.5521978021978,208" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232616)" style="fill:none"></path><defs><marker id="arrowhead232616" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M740.7792249047014,555.0292249047014L841.25,501.5L841.25,456L841.25,389.5L841.25,300.75L841.25,233L775.5,205.86507936507937" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232617)" style="fill:none"></path><defs><marker id="arrowhead232617" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M746.2980540111199,560.5480540111199L959.25,501.5L959.25,456L959.25,389.5L959.25,300.75L959.25,233L775.5,196.37075575027382" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232618)" style="fill:none"></path><defs><marker id="arrowhead232618" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M502.3472766108936,306.6527233891064L1078,389.5L1078.5,436" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232619)" style="stroke: #333; fill:none;stroke-width:2px;stroke-dasharray:3;"></path><defs><marker id="arrowhead232619" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1078.5,477L1078,501.5L1092.3930722891566,538.7319277108434" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232620)" style="fill:none"></path><defs><marker id="arrowhead232620" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1128.8715034965035,551.7465034965035L1196.75,501.5L1196.75,456L1196.75,389.5L1196.75,300.75L1196.75,233L775.5,191.8472893183038" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232621)" style="fill:none"></path><defs><marker id="arrowhead232621" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1382.375,730.1387096774193L761.75,791L762.25,837.5" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232622)" style="stroke: #333; fill:none;stroke-width:2px;stroke-dasharray:3;"></path><defs><marker id="arrowhead232622" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M762.25,878.5L761.75,903L762.2500000000001,928.5000015258793" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232623)" style="fill:none"></path><defs><marker id="arrowhead232623" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M762.2500000000001,1034.6999984741212L761.75,1090.6999969482422L1149.5168805468938,1182.3081164013483" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232624)" style="fill:none"></path><defs><marker id="arrowhead232624" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M807.2357289176578,989.7142726082212L1369.375,1090.6999969482422L1369.875,1147.6999969482422" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232625)" style="fill:none"></path><defs><marker id="arrowhead232625" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1203.689549180328,1167.2645461285701L1267.375,1090.6999969482422L1267.375,981.0999984741211L1267.375,903L1267.375,857.5L1267.375,791L1267.375,724.5L1267.375,658L1267.375,569.25L1267.375,501.5L1267.375,456L1267.375,389.5L1267.375,300.75L1267.375,233L775.5,191.27487765089722" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232626)" style="fill:none"></path><defs><marker id="arrowhead232626" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1184.125,1233.1999969482422L1183.625,1278.6999969482422L1183.625,1345.1999969482422L1183.625,1411.6999969482422L1183.625,1500.4499969482422L1183.625,1589.1999969482422L1206.1926691729323,1635.1999969482422" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232627)" style="fill:none"></path><defs><marker id="arrowhead232627" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1358.2238729508197,1221.5488698990619L1336.125,1278.6999969482422L1359.125,1324.6999969482422" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232628)" style="fill:none"></path><defs><marker id="arrowhead232628" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1394.8542154566744,1208.2207814915678L1494.125,1278.6999969482422L1407.8317669172932,1324.6999969482422" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232629)" style="fill:none"></path><defs><marker id="arrowhead232629" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1260.75,1652.413596467906L1493.8333333333333,1635.1999969482422L1552.1041666666667,1635.1999969482422L1610.375,1655.6999969482422L1552.1041666666667,1676.1999969482422L1493.8333333333333,1676.1999969482422L1260.75,1658.9863974285784" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232630)" style="fill:none"></path><defs><marker id="arrowhead232630" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1216.25,1676.1999969482422L1216.25,1701.1999969482422L1216.75,1726.6999969482422" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232631)" style="fill:none"></path><defs><marker id="arrowhead232631" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1216.75,1767.6999969482422L1216.25,1792.1999969482422L1216.75,1817.6999977111764" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232632)" style="fill:none"></path><defs><marker id="arrowhead232632" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1194.0501301081101,1902.1001262934126L1143,1970.2999954223633L1193.6691729323309,2016.2999954223633" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232633)" style="fill:none"></path><defs><marker id="arrowhead232633" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1257.6502948860373,1883.899702825149L1538.125,1970.2999954223633L1251.25,2029.5689274611982" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232634)" style="fill:none"></path><defs><marker id="arrowhead232634" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1216.25,2057.2999954223633L1216.25,2082.2999954223633L1631.201534296029,2144.9734611263343" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232635)" style="fill:none"></path><defs><marker id="arrowhead232635" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1668.375,2107.7999954223633L1667.875,2082.2999954223633L1667.875,2036.7999954223633L1667.875,1970.2999954223633L1667.875,1870.7499961853027L1667.875,1792.1999969482422L1667.875,1746.6999969482422L1667.875,1701.1999969482422L1667.875,1655.6999969482422L1667.875,1589.1999969482422L1667.875,1500.4499969482422L1667.875,1411.6999969482422L1667.875,1345.1999969482422L1667.875,1278.6999969482422L1667.875,1189.9499969482422L1667.875,1090.6999969482422L1667.875,981.0999984741211L1667.875,903L1667.875,857.5L1667.875,791L1667.875,724.5L1667.875,658L1667.875,569.25L1667.875,501.5L1667.875,456L1667.875,389.5L1667.875,300.75L1667.875,233L1667.875,187.5L1667.875,121L1235.8958763814967,47.145504671675255" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232636)" style="fill:none"></path><defs><marker id="arrowhead232636" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1694.6452702702702,2134.0702656926337L1775.875,2082.2999954223633L1775.875,2036.7999954223633L1775.875,1970.2999954223633L1775.875,1870.7499961853027L1775.875,1792.1999969482422L1775.875,1746.6999969482422L1775.875,1701.1999969482422L1775.875,1655.6999969482422L1775.875,1589.1999969482422L1775.875,1500.4499969482422L1775.875,1411.6999969482422L1775.875,1345.1999969482422L1775.875,1278.6999969482422L1775.875,1189.9499969482422L1775.875,1090.6999969482422L1775.875,981.0999984741211L1775.875,903L1775.875,857.5L1775.875,791L1497.375,735.8802083333334" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232637)" style="fill:none"></path><defs><marker id="arrowhead232637" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1369.375,1365.6999969482422L1369.375,1411.6999969482422L1403.2684426229507,1473.3065543252915" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232638)" style="fill:none"></path><defs><marker id="arrowhead232638" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1446.6438454198474,1486.4688423680896L1591.125,1411.6999969482422L1591.125,1345.1999969482422L1591.125,1278.6999969482422L1591.125,1189.9499969482422L1591.125,1090.6999969482422L1591.125,981.0999984741211L1591.125,903L1591.125,857.5L1591.125,791L1591.125,724.5L1591.125,658L1591.125,569.25L1591.125,501.5L1591.125,456L1591.125,389.5L1591.125,300.75L1591.125,233L775.5,189.85401831129195" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232639)" style="fill:none"></path><defs><marker id="arrowhead232639" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M1418.375,1543.6999969482422L1417.875,1589.1999969482422L1260.75,1641.022997568205" marker-end="url(https://mermaidjs.github.io/mermaid-live-editor/#arrowhead232640)" style="fill:none"></path><defs><marker id="arrowhead232640" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1px; stroke-dasharray: 1px, 0px;"></path></marker></defs></g></g><g class="edgeLabels"><g class="edgeLabel" style="opacity: 1;" transform="translate(731,121)"><g transform="translate(-47.5,-21)" class="label"><foreignObject width="95" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">R0 = MenuMain <br> S = MenuMain</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform=""><g transform="translate(0,0)" class="label"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(91.75,389.5)"><g transform="translate(-32.5,-10.5)" class="label"><foreignObject width="65" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">MenuMain</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform=""><g transform="translate(0,0)" class="label"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(210.5,389.5)"><g transform="translate(-54.5,-21)" class="label"><foreignObject width="109" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Settings <br> S = MenuSettings</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(343,389.5)"><g transform="translate(-58,-21)" class="label"><foreignObject width="116" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Statistics <br> S = MenuStatistics</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1439.875,658)"><g transform="translate(-58.5,-21)" class="label"><foreignObject width="117" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Run Watering <br> S = HumidityCheck</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(205.375,1090.6999969482422)"><g transform="translate(-63,-31.5)" class="label"><foreignObject width="126" height="63"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Go to sleep <br> R0 = 0 <br> S = EnterSleepMode</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(464.5,389.5)"><g transform="translate(-43.5,-10.5)" class="label"><foreignObject width="87" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">MenuSettings</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform=""><g transform="translate(0,0)" class="label"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(583.25,389.5)"><g transform="translate(-54.5,-21)" class="label"><foreignObject width="109" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Hum. threshold <br> S = MenuSettings</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(712.25,389.5)"><g transform="translate(-54.5,-21)" class="label"><foreignObject width="109" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">liters/watering <br> S = MenuSettings</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(841.25,389.5)"><g transform="translate(-54.5,-21)" class="label"><foreignObject width="109" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Check interval <br> S = MenuSettings</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(959.25,389.5)"><g transform="translate(-43.5,-21)" class="label"><foreignObject width="87" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Back <br> S = MenuMain</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1078,389.5)"><g transform="translate(-47,-10.5)" class="label"><foreignObject width="94" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">MenuStatistics</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform=""><g transform="translate(0,0)" class="label"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1196.75,389.5)"><g transform="translate(-43.5,-21)" class="label"><foreignObject width="87" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Back <br> S = MenuMain</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform=""><g transform="translate(0,0)" class="label"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform=""><g transform="translate(0,0)" class="label"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(761.75,1090.6999969482422)"><g transform="translate(-31,-10.5)" class="label"><foreignObject width="62" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Sufficient</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1369.375,1090.6999969482422)"><g transform="translate(-36.5,-10.5)" class="label"><foreignObject width="73" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Insufficient</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1267.375,658)"><g transform="translate(-47.5,-21)" class="label"><foreignObject width="95" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">HumidityCheck <br> S = MenuMain</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1183.625,1411.6999969482422)"><g transform="translate(-77,-21)" class="label"><foreignObject width="154" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">HumidityCheckAndSleep <br> S = EnterSleepMode</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1336.125,1278.6999969482422)"><g transform="translate(-61,-21)" class="label"><foreignObject width="122" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">HumidityCheck <br> S = WateringManual</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1494.125,1278.6999969482422)"><g transform="translate(-77,-21)" class="label"><foreignObject width="154" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">HumidityCheckAndSleep <br> S = WateringAutomatic</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1610.375,1655.6999969482422)"><g transform="translate(-37.5,-10.5)" class="label"><foreignObject width="75" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">S = Sleeping</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform=""><g transform="translate(0,0)" class="label"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform=""><g transform="translate(0,0)" class="label"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1143,1970.2999954223633)"><g transform="translate(-61.5,-21)" class="label"><foreignObject width="123" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">User <br> S = WakedUpByUser</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1538.125,1970.2999954223633)"><g transform="translate(-65,-21)" class="label"><foreignObject width="130" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Timer <br> S = WakedUpByTimer</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform=""><g transform="translate(0,0)" class="label"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1667.875,1090.6999969482422)"><g transform="translate(-50.5,-10.5)" class="label"><foreignObject width="101" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">WakedUpByUser</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1775.875,1500.4499969482422)"><g transform="translate(-88,-21)" class="label"><foreignObject width="176" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">WakedUpByTimer<br> S = HumidityCheckAndSleep</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform=""><g transform="translate(0,0)" class="label"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1591.125,791)"><g transform="translate(-50,-21)" class="label"><foreignObject width="100" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">WateringManual<br> S = MenuMain</span></div></foreignObject></g></g><g class="edgeLabel" style="opacity: 1;" transform="translate(1417.875,1589.1999969482422)"><g transform="translate(-63,-21)" class="label"><foreignObject width="126" height="42"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">WateringAutomatic <br> S = EnterSleepMode</span></div></foreignObject></g></g></g><g class="nodes"><g class="node" style="opacity: 1;" id="Startup" transform="translate(1202.875,41.5)"><circle x="-33.5" y="-20.5" r="33.5" class="label-container"></circle><g class="label" transform="translate(0,0)"><g transform="translate(-23.5,-10.5)"><foreignObject width="47" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Startup</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="ShowMenu" transform="translate(731,187.5)"><rect rx="0" ry="0" x="-44.5" y="-20.5" width="89" height="41" class="label-container"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-34.5,-10.5)"><foreignObject width="69" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">ShowMenu</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="ShowMenuStateSwitch" transform="translate(464.5,300.75)"><polygon points="42.75,0 85.5,-42.75 42.75,-85.5 0,-42.75" transform="translate(-42.75,42.75)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-17,-10.5)"><foreignObject width="34" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">State</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="MenuMainInput" transform="translate(91.75,456)"><polygon points="-20.5,0 147,0 147,-41 -20.5,-41 0,-20.5" transform="translate(-73.5,20.5)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-63.5,-10.5)"><foreignObject width="127" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Menu Item Selected</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="MenuMainInputSwitch" transform="translate(205.375,569.25)"><polygon points="42.75,0 85.5,-42.75 42.75,-85.5 0,-42.75" transform="translate(-42.75,42.75)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-17,-10.5)"><foreignObject width="34" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Input</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="HumidityCheck" transform="translate(1439.875,724.5)"><rect rx="0" ry="0" x="-57.5" y="-20.5" width="115" height="41" class="label-container"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-47.5,-10.5)"><foreignObject width="95" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">CheckHumidity</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="SleepMode" transform="translate(1216.25,1655.6999969482422)"><rect rx="0" ry="0" x="-44.5" y="-20.5" width="89" height="41" class="label-container"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-34.5,-10.5)"><foreignObject width="69" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">SleepMode</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="MenuSettingsInput" transform="translate(464.5,456)"><polygon points="-20.5,0 147,0 147,-41 -20.5,-41 0,-20.5" transform="translate(-73.5,20.5)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-63.5,-10.5)"><foreignObject width="127" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Menu Item Selected</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="MenuSettingsInputSwitch" transform="translate(712.25,569.25)"><polygon points="42.75,0 85.5,-42.75 42.75,-85.5 0,-42.75" transform="translate(-42.75,42.75)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-17,-10.5)"><foreignObject width="34" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Input</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="MenuStatisticsInput" transform="translate(1078,456)"><polygon points="-20.5,0 147,0 147,-41 -20.5,-41 0,-20.5" transform="translate(-73.5,20.5)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-63.5,-10.5)"><foreignObject width="127" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Menu Item Selected</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="MenuStatisticsInputSwitch" transform="translate(1103.625,569.25)"><polygon points="42.75,0 85.5,-42.75 42.75,-85.5 0,-42.75" transform="translate(-42.75,42.75)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-17,-10.5)"><foreignObject width="34" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Input</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="HumidityCheckResults" transform="translate(761.75,857.5)"><polygon points="-20.5,0 114,0 114,-41 -20.5,-41 0,-20.5" transform="translate(-57,20.5)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-47,-10.5)"><foreignObject width="94" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Humidity Level</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="HumidityCheckSwitch" transform="translate(761.75,981.0999984741211)"><polygon points="53.1,0 106.2,-53.1 53.1,-106.2 0,-53.1" transform="translate(-53.1,53.1)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-28.5,-10.5)"><foreignObject width="57" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Humidity</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="HumidityCheckSufficientTypeSwitch" transform="translate(1183.625,1189.9499969482422)"><polygon points="42.75,0 85.5,-42.75 42.75,-85.5 0,-42.75" transform="translate(-42.75,42.75)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-17,-10.5)"><foreignObject width="34" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">State</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="HumidityCheckInsufficientTypeSwitch" transform="translate(1369.375,1189.9499969482422)"><polygon points="42.75,0 85.5,-42.75 42.75,-85.5 0,-42.75" transform="translate(-42.75,42.75)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-17,-10.5)"><foreignObject width="34" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">State</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="RunWatering" transform="translate(1369.375,1345.1999969482422)"><rect rx="0" ry="0" x="-50" y="-20.5" width="100" height="41" class="label-container"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-40,-10.5)"><foreignObject width="80" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">RunWatering</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="SleepInterrupted" transform="translate(1216.25,1746.6999969482422)"><polygon points="-20.5,0 132,0 132,-41 -20.5,-41 0,-20.5" transform="translate(-66,20.5)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-56,-10.5)"><foreignObject width="112" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Sleep Interrupted</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="SleepInterruptedSwitch" transform="translate(1216.25,1870.7499961853027)"><polygon points="53.550000000000004,0 107.10000000000001,-53.550000000000004 53.550000000000004,-107.10000000000001 0,-53.550000000000004" transform="translate(-53.550000000000004,53.550000000000004)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-29,-10.5)"><foreignObject width="58" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Interrupt</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="WakeUp" transform="translate(1216.25,2036.7999954223633)"><rect rx="0" ry="0" x="-35" y="-20.5" width="70" height="41" class="label-container"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-25,-10.5)"><foreignObject width="50" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">WakeUp</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="WakeUpSwitch" transform="translate(1667.875,2150.0499954223633)"><polygon points="42.75,0 85.5,-42.75 42.75,-85.5 0,-42.75" transform="translate(-42.75,42.75)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-17,-10.5)"><foreignObject width="34" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">State</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="RunWateringSwitch" transform="translate(1417.875,1500.4499969482422)"><polygon points="42.75,0 85.5,-42.75 42.75,-85.5 0,-42.75" transform="translate(-42.75,42.75)" class="label-container"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-17,-10.5)"><foreignObject width="34" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">State</div></foreignObject></g></g></g></g></g></g></svg>
